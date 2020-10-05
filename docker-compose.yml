@@ -1,0 +1,16 @@
+version: '2.2'
+services:
+
+  zoom:
+    container_name: zoom-web
+    image: scioquiver/zoomwebapp
+    ports:
+      - "9999:9999"
+      - "4000:4000"
+      - "443:443"
+    volumes:
+      - ./localhost.crt:/zoom-web-app/localhost.crt
+      - ./localhost.key:/zoom-web-app/localhost.key
+      - ./localhost.crt:/node.js-simple-https-server-master/cert.pem
+      - ./localhost.key:/node.js-simple-https-server-master/key.pem
+      - ./.env:/node.js-simple-https-server-master/.env
