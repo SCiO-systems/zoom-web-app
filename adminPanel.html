@@ -1,0 +1,2376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.2.0/main.min.css" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <link href="https://source.zoom.us/1.8.0/css/react-select.css" rel="stylesheet" type="text/css"/>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+    <script crossorigin="anonymous" src="https://kit.fontawesome.com/2e0d3a5f6b.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js" type="text/javascript"></script>
+
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+
+
+    <!-- luxon lib -->
+    <script src='https://cdn.jsdelivr.net/npm/luxon@1.24.1/build/global/luxon.min.js'></script>
+
+    <!-- fullcalendar bundle -->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.2.0/main.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.2.0/locales-all.js'></script>
+
+    <!-- the luxon-to-fullcalendar connector. must go AFTER the luxon lib -->
+    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/luxon@5.2.0/main.global.min.js'></script>
+    <link href="css/country-flag.css" rel="stylesheet" type="text/css">
+    <script src="js/country-flag.js"></script>
+    <link href="css/toggle.css" rel="stylesheet" type="text/css">
+
+</head>
+<body style="background-color:#e9ecee;">
+
+
+
+
+
+<div class="modal fade" id="successCreateMeetingModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row">
+                    <div class="col-2">
+                        <i class="fad fa-check-circle fa-3x" aria-hidden="true" style="color:green"></i>
+                    </div>
+                    <div class="col-10" style="margin:auto">
+                        <span id="successCreateMeetingModalText" style="text-align: justify;text-justify: inter-word;">The meeting has been scheduled! You can share the invitations.</span>
+                    </div>
+                </div>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <i class="fal fa-times" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+<div class="modal fade" id="failCreateMeetingModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row">
+                    <div class="col-2">
+                        <i class="fad fa-times-circle fa-3x" aria-hidden="true" style="color:red"></i>
+                    </div>
+                    <div class="col-10" style="margin:auto">
+                        <span id="failCreateMeetingModalText" style="text-align: justify;text-justify: inter-word;">Meeting not scheduled! Please try again.</span>
+                    </div>
+                </div>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <i class="fal fa-times" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row">
+                    <div class="col-2">
+                        <i class="fad fa-times-circle fa-3x" aria-hidden="true" style="color:red"></i>
+                    </div>
+                    <div class="col-10" style="margin:auto">
+                        <span style="text-align: justify;text-justify: inter-word;">Invitations not send! Please try again.</span>
+                    </div>
+                </div>
+                <button id="theEmailsAreNotSent"  aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <i class="fal fa-times" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>    </div>
+</div>
+
+
+<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row">
+                    <div class="col-2">
+                        <i class="fad fa-check-circle fa-3x" aria-hidden="true" style="color:green"></i>
+                    </div>
+                    <div class="col-10" style="margin:auto">
+                        <span id="theEmailsAreSent" style="text-align: justify;text-justify: inter-word;">The Invitations have been sent successfully!</span>
+                    </div>
+                </div>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <i class="fal fa-times" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<nav class="navbar navbar-inverse navbar-fixed-top" id="nav-tool" style="display: none">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Zoom WebSDK</a>
+        </div>
+        <div class="websdktest" id="navbar">
+            <form class="navbar-form navbar-right" id="meeting_form">
+                <div class="form-group">
+                    <input class="form-control allSidesRed" id="display_name" maxLength="100" name="display_name"
+                           placeholder="Name" required value="1.8.0#CDN">
+                </div>
+                <div class="form-group">
+                    <input class="form-control allSidesRed" id="meeting_number" maxLength="200" name="meeting_number"
+                           placeholder="Meeting Number" required style="width:150px" value="">
+                </div>
+                <div class="form-group">
+                    <input class="form-control allSidesRed" id="meeting_pwd" maxLength="50" name="meeting_pwd"
+                           placeholder="Meeting Password" style="width:150px" value="">
+                </div>
+                <div class="form-group">
+                    <input class="form-control allSidesRed" id="meeting_email" maxLength="50" name="meeting_email"
+                           placeholder="Email option" style="width:150px" value="">
+                </div>
+
+                <div class="form-group">
+                    <select class="sdk-select" id="meeting_role">
+                        <option value=0>Attendee</option>
+                        <option value=1>Host</option>
+                        <option value=5>Assistant</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select class="sdk-select" id="meeting_china">
+                        <option value=0>Global</option>
+                        <option value=1>China</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select class="sdk-select" id="meeting_lang">
+                        <option value="en-US">English</option>
+                        <option value="de-DE">German Deutsch</option>
+                        <option value="es-ES">Spanish Español</option>
+                        <option value="fr-FR">French Français</option>
+                        <option value="jp-JP">Japanese 日本語</option>
+                        <option value="pt-PT">Portuguese Portuguese</option>
+                        <option value="ru-RU">Russian Русский</option>
+                        <option value="zh-CN">Chinese 简体中文</option>
+                        <option value="zh-TW">Chinese 繁体中文</option>
+                        <option value="ko-KO">Korean 한국어</option>
+                        <option value="vi-VN">Vietnamese Tiếng Việt</option>
+                        <option value="it-IT">Italian italiano</option>
+                    </select>
+                </div>
+
+                <input id="copy_link_value" type="hidden" value=""/>
+                <button class="btn btn-primary" id="join_meeting" type="submit">Join</button>
+                <button class="btn btn-primary" id="clear_all" type="submit">Clear</button>
+                <button class="btn btn-primary" id="copy_join_link" link=""
+                        onclick="window.copyJoinLink('#copy_join_link')" type="button">Copy Direct join link
+                </button>
+
+
+            </form>
+        </div>
+        <!--/.navbar-collapse -->
+    </div>
+</nav>
+
+<div class="row" style="margin-bottom: 50px;">
+    <div class="container-fluid" id="navBarContainer" style="padding-right:0px;padding-left: 0px">
+        <nav class=" navbar fixed-top scrolling-navbar white navbar-expand-md font-weight-500 font-bigger"
+             id="navbar"
+             role="navigation">
+            <div class="row" style="width:100%">
+                <div class="col">
+
+                    <a  href="https://centralasiaclimateportal.org/"  target="_blank" aria-current="page" class="navbar-brand px-1 py-0 mr-0 active"
+                        data-test="navbar-brand">
+
+                        <img alt="cacip logo"
+                             class="d-inline-block mx-3 nav-logo-colored"
+                             src="images/logo-horizontal-colored.edd3d535.png"
+                             style="width:250px;height:50px;float:left;margin-left: 50px"
+                             title="Central Asia Climate Information Platform | CACIP">
+
+                    </a>
+                </div>
+
+                <div class="col">
+
+                    <a href="https://zoom.us/" aria-current="page" target="_blank" class="navbar-brand px-1 py-0 mr-0 active" data-test="navbar-brand"
+                       style="float:right">
+                        <img alt="zoom logo"
+                             class="d-inline-block mx-3 nav-logo-colored"
+                             src="images/Powered-by-Zoom.png"
+                             style="height:50px;float:right;margin-right: 50px"
+                        >
+                    </a>
+                </div>
+            </div>
+
+        </nav>
+    </div>
+</div>
+
+
+
+
+<div class="container" style="margin-top: 50px">
+
+
+    <!--    <button class="flag flag-gb" id="countryButton" onclick="ChangeLanguage()" style="border: none"-->
+    <!--            type="button"></button>-->
+    <!--    <input id="togglerViewId" type="checkbox" style="margin-left: 20px;" checked data-toggle="toggle" data-on="Table" data-off="Calendar" data-onstyle="success" data-offstyle="danger">-->
+    <!--    <input id="togglerId" type="checkbox" style="margin-left: 20px;" checked data-toggle="toggle" data-on="Requests" data-off="History" data-onstyle="success" data-offstyle="danger">-->
+
+    <div class="row">
+
+
+        <div class="col-lg-12" style="margin-bottom: 20px;">
+            <div class="card" style="padding-bottom: 10px;">
+                <h1 class="text-center" id="MeetingHeader" >Meeting Requests</h1>
+                <h1 style="display: none" class="text-center" id="MeetingHeaderScheduled" >Scheduled Meetings</h1>
+
+            </div>
+        </div>
+
+        <div class="col-lg-12" style="margin-bottom: 20px;">
+            <div class="card" style="padding-top:5px;padding-bottom:5px;padding-left:5px">
+                <div id='top' class="row">
+
+                    <div class="col-lg-1" style="display: none">
+                        <div id="timezoneSelector" style='float:left;margin-left: 20px;margin-top: 3px;'>Timezone:</div>
+                        <select style="margin-top: 5px;margin-left: 5px;" id='time-zone-selector'></select>
+                        <div style='float:right'>
+                            <span id='loading'></span>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-1">
+
+                    </div>
+
+                    <div class="col-lg-5">
+
+                        <button id="togglerId" type="button" class="btn btn-lg-requests btn-toggle" data-toggle="button" aria-pressed="false" autocomplete="off">
+                            <div class="handle"></div>
+                        </button>
+                    </div>
+
+                    <div class="col-lg-5">
+
+                        <button id="togglerViewId" type="button" class="btn btn-lg-calendar btn-toggle" data-toggle="button" aria-pressed="false" autocomplete="off">
+                            <div class="handle"></div>
+                        </button>
+                    </div>
+
+
+                    <div class="col-lg-1">
+
+                        <button class="flag flag-gb" id="countryButton" onclick="ChangeLanguage()" style="margin-top: 4px;     margin-right: 20px;border: none; float:right"
+                                type="button"></button>
+                    </div>
+                </div>
+
+                <!--                    <input id="togglerViewId" type="checkbox" style="margin-left: 20px;" checked data-toggle="toggle" data-on="Table" data-off="Calendar" data-onstyle="success" data-offstyle="danger">-->
+                <!--                    <input id="togglerId" type="checkbox" style="margin-left: 20px;" checked data-toggle="toggle" data-on="Requests" data-off="Scheduled" data-onstyle="success" data-offstyle="danger">-->
+
+
+
+
+
+            </div>
+        </div>
+
+
+        <div class="col-lg-12"  style="margin-bottom: 40px;">
+
+            <div class="card">
+
+                <div class="card-body"  style="padding-top: 0px;">
+                    <div class="row">
+
+
+
+                        <div class="col-lg-12" id="tableView" style="display:none;padding-top: 20px;">
+
+                            <div class="container" id="tablearea">
+                                <table id="datatable" class="compact display" width="100%"></table>
+                            </div>
+                            <div class="container" id="tableareaHistory">
+                                <table id="datatableHistory" class="compact display" width="100%"></table>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12"  id="calendar" style="margin-top: 20px;" ></div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <div class="row">
+
+        <div class="col-lg-12" id="extraInfoPanel" style="margin-bottom: 40px;display: none">
+            <div class="card" style="padding-bottom: 25px;">
+                <h5 id="meetingTitle" style="padding-top: 15px;padding-left: 25px;">Title</h5>
+
+                <input class=" form-control allSidesGreen" style="margin-left: 25px;width: 95.5%;" id="meetingTitleBox"
+                       maxlength="50" onclick="AddListenerValidateMeetingDetails()"
+                       placeholder="" style="width: 100%;">
+
+                <h5 id="meetingDescription"style="padding-top: 15px;padding-left: 25px;">Description</h5>
+
+                <input class=" form-control allSidesGreen" id="meetingDescriptionBox"
+                       maxlength="50" onclick="AddListenerValidateMeetingDetails()"
+                       placeholder="" style="margin-left: 25px;width: 95.5%;height: 80px;padding-bottom: 15px;">
+            </div>
+        </div>
+
+
+        <div class="col-12" >
+            <div class="card">
+                <h4 id="meetingParticipants" class="text-center">Meeting Participants</h4>
+
+                <div class="card-body">
+
+                    <div class="row clearfix">
+                        <div class="col-md-12 table-responsive">
+                            <div class="list_wrapper">
+                                <div class="d-flex flex-row line">
+
+
+                                    <div class="form-group flex-grow-1" style="margin-top: 16px;">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <input autocomplete="new-password"
+                                                       class="form-control participants allSidesRed"
+                                                       id="nameParticipant[0]" placeholder="Host Name">
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <input autocomplete="new-password"
+                                                       class="form-control participants allSidesRed"
+                                                       id="emailParticipant[0]" placeholder="Host Email">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group"
+                                         style="margin-top: 16px;margin-bottom: 16px;margin-left: 16px;">
+
+                                        <button class="btn btn-primary list_add_button" id="addParticipant" style="margin-left: 20px;"
+                                                type="button"><i aria-hidden="true"
+
+                                                                 class="fad fa-plus"></i></button>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--                    <button class="btn btn-primary" name="clear" onclick="ClearMeetingParticipants()"-->
+                    <!--                            style="margin-top: 10px;">Clear Participants-->
+                    <!--                    </button>-->
+
+                    <button class="btn btn-primary disable-button-participants" id="sendInvite" onclick="SendInvite()"
+                            style="margin-top: 10px;float: right">Send Invitations
+                    </button>
+                    <button class="btn btn-primary disable-button-participants" id="createMeeting"  onclick="CreateMeeting()"
+                            style="margin-top: 10px;float: right;margin-right: 10px;">Create Meeting
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+<script>
+
+    $(document).ready(function () {
+        $("#add_row").on("click", function () {
+            // Dynamic Rows Code
+
+            // Get max row id and set new id
+            var newid = 0;
+            $.each($("#tab_logic tr"), function () {
+                if (parseInt($(this).data("id")) > newid) {
+                    newid = parseInt($(this).data("id"));
+                }
+            });
+            newid++;
+
+            var tr = $("<tr></tr>", {
+                id: "addr" + newid,
+                "data-id": newid
+            });
+
+            // loop through each td and create new elements with name of newid
+            $.each($("#tab_logic tbody tr:nth(0) td"), function () {
+                var td;
+                var cur_td = $(this);
+
+                var children = cur_td.children();
+
+                // add new td and element if it has a nane
+                if ($(this).data("name") !== undefined) {
+                    td = $("<td></td>", {
+                        "data-name": $(cur_td).data("name")
+                    });
+
+                    var c = $(cur_td).find($(children[0]).prop('tagName')).clone().val("");
+                    c.attr("name", $(cur_td).data("name") + newid);
+                    c.appendTo($(td));
+                    td.appendTo($(tr));
+                } else {
+                    td = $("<td></td>", {
+                        'text': $('#tab_logic tr').length
+                    }).appendTo($(tr));
+                }
+            });
+
+            // add delete button and td
+            /*
+            $("<td></td>").append(
+                $("<button class='btn btn-danger glyphicon glyphicon-remove row-remove'></button>")
+                    .click(function() {
+                        $(this).closest("tr").remove();
+                    })
+            ).appendTo($(tr));
+            */
+
+            // add the new row
+            $(tr).appendTo($('#tab_logic'));
+
+            $(tr).find("td button.row-remove").on("click", function () {
+                $(this).closest("tr").remove();
+            });
+        });
+
+
+        // Sortable Code
+        var fixHelperModified = function (e, tr) {
+            var $originals = tr.children();
+            var $helper = tr.clone();
+
+            $helper.children().each(function (index) {
+                $(this).width($originals.eq(index).width())
+            });
+
+            return $helper;
+        };
+
+        $(".table-sortable tbody").sortable({
+            helper: fixHelperModified
+        }).disableSelection();
+
+        $(".table-sortable thead").disableSelection();
+
+
+        $("#add_row").trigger("click");
+    });
+</script>
+<script>
+
+    function sendMail(clickedId) {
+        let participantNumber = clickedId[clickedId.length - 2];
+        let meetingId = document.getElementById("meetingId").value
+        let meetingPassword = document.getElementById("meetingPassword").value
+        let meetingGeneratedLink = joinLinkForEmail(participantNumber);
+
+    }
+
+    function ClearMeetingDetails() {
+        document.getElementById("meetingId").value = '';
+        document.getElementById("meetingId").classList.remove("allSidesGreen");
+        document.getElementById("meetingId").classList.add("allSidesRed");
+        // // console.log("xlll3")
+
+        document.getElementById("meetingPassword").value = '';
+        document.getElementById("meetingPassword").classList.remove("allSidesGreen");
+        document.getElementById("meetingPassword").classList.add("allSidesRed");
+
+        document.getElementById("hostEmail").value = '';
+        document.getElementById("hostEmail").classList.remove("allSidesGreen");
+        document.getElementById("hostEmail").classList.add("allSidesRed");
+
+        document.getElementById("hostId").value = '';
+        document.getElementById("hostId").classList.remove("allSidesGreen");
+        document.getElementById("hostId").classList.add("allSidesRed");
+        document.getElementById("startMeeting").classList.add("disable-button-meeting")
+
+
+    }
+
+
+</script>
+<script>
+    $(document).ready(function () {
+
+        var x = 0; //Initial field counter
+        var list_maxField = 10; //Input fields increment limitation
+
+        //Once add button is clicked
+        $('.list_add_button').click(function () {
+
+            //Check maximum number of input fields
+            if (x < list_maxField) {
+                x++; //Increment field counter
+                var list_fieldHTML = '<div class="d-flex flex-row">' +
+
+                    '<div class="form-group flex-grow-1" style="margin-top: 16px;">' +
+                    '<div class="row">' +
+                    '<div class="col-sm-6">' +
+                    '<input autocomplete="new-password" id="nameParticipant[' + x + ']"  placeholder="Name" class="form-control participants allSidesRed"/>' +
+                    '</div>' +
+                    '<div class="col-sm-6">' +
+                    '<input autocomplete="new-password" id="emailParticipant[' + x + ']"  placeholder="Email" class="form-control participants allSidesRed"/>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="form-group" style="margin-top: 16px;margin-bottom: 16px;margin-left: 16px;">' +
+
+                    '<button type="button" style="margin-left: 16px;" href="javascript:void(0);" class="list_remove_button btn btn-danger">' +
+                    '<i class="fad fa-minus"></i></button>' +
+
+
+                    '</div>' +
+                    '</div>' +
+
+                    '<div class="flex-row" id="joinLinkTextRow[' + x + ']"  style="display: none;"> ' +
+                    '<div class="form-group" style="min-width: 80px;margin-bottom: 16px;margin-top: 8px;">' +
+
+                    '<div>' +
+                    '<label style="">Join Link:</label>\n' +
+                    '</div>' +
+                    '</div><div class="form-group flex-grow-1">' +
+                    '<div class="row">' +
+                    '<div class="col-12">' +
+                    '<input autocomplete="new-password" class="form-control participants allSidesGreen" id="joinLinkTextBox[' + x + ']" value="">\n' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>'
+
+                    // '<div class="col-md-11">' +
+                    // '<div class="row" style="margin-top: 3px;margin-bottom: 8px;display: none"  id="joinLinkTextRow[' + x + ']">' +
+                    // '<label style="">Join Link:</label>' +
+                    // '<input id="joinLinkTextBox[' + x + ']" value=\'\'  style="width:85%;display: inline-block" class="form-control participants allSidesGreen"/>' +
+                    // '</div>' +
+                    // '</div>'
+
+
+                ;
+
+
+                //New input field html
+                $('.list_wrapper').append(list_fieldHTML); //Add field html
+
+                document.getElementById("nameParticipant["+x+"]").placeholder = lang.contactUsername
+                document.getElementById("emailParticipant["+x+"]").placeholder = lang.contactEmail
+
+            }
+
+
+            AddListenerValidateEmail(x);
+
+
+        });
+
+        //Once remove button is clicked
+        $('.list_wrapper').on('click', '.list_remove_button', function () {
+            $(this).closest('div.flex-row').remove(); //Remove field html
+            document.getElementById("joinLinkTextRow[" + x + "]").remove();
+
+            x--; //Decrement field counter
+        });
+    });
+</script>
+<script>
+    $(".toggle-password").click(function () {
+
+        $(this).toggleClass("fad fa-eye fad fa-eye-slash");
+        var input = $($(this).attr("toggle"));
+        if (input.attr("type") == "password") {
+            input.attr("type", "text");
+        } else {
+            input.attr("type", "password");
+        }
+    });
+</script>
+
+<script>
+    /////****Event Listener for Email Validation****////////
+    let timer, timeoutVal = 500; // time it takes to wait for user to stop typing in ms
+    const typer = document.getElementById("emailParticipant[" + 0 + "]");
+    typer.addEventListener('keypress', handleKeyPress);
+    typer.addEventListener('keyup', handleKeyUp);
+    document.getElementById("nameParticipant[" + 0 + "]").addEventListener('keypress', handleKeyPress);
+    document.getElementById("nameParticipant[" + 0 + "]").addEventListener('keyup', handleKeyUp);
+    // document.getElementById("EmailTextBox").addEventListener('keypress', handleKeyPress);
+    // document.getElementById("EmailTextBox").addEventListener('keyup', handleKeyUp);
+    // document.getElementById("meetingId").addEventListener('keypress', handleKeyPress);
+    // document.getElementById("meetingId").addEventListener('keyup', handleKeyUp);
+    // document.getElementById("meetingPassword").addEventListener('keypress', handleKeyPress);
+    // document.getElementById("meetingPassword").addEventListener('keyup', handleKeyUp);
+    // document.getElementById("EmailSubject").addEventListener('keypress', handleKeyPress);
+    // document.getElementById("EmailSubject").addEventListener('keyup', handleKeyUp);
+
+    // when user is pressing down on keys, clear the timeout
+    function handleKeyPress(e) {
+        window.clearTimeout(timer);
+    }
+
+    // when the user has stopped pressing on keys, set the timeout
+    // if the user presses on keys before the timeout is reached, then this timeout is canceled
+    function handleKeyUp(e) {
+        window.clearTimeout(timer); // prevent errant multiple timeouts from being generated
+        timer = window.setTimeout(() => {
+            const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            let isValid = re.test(String(typer.value.toString()).toLowerCase());
+            let participant = document.getElementById("copyParticipant[" + 0 + "]");
+            let envelopeParticipant = document.getElementById("envelopeParticipant[" + 0 + "]");
+            let nameParticipant = document.getElementById("nameParticipant[" + 0 + "]").value;
+            let meetingId = document.getElementById("meetingId").value
+            let meetingPassword = document.getElementById("meetingPassword").value
+            let emailParticipantZero = document.getElementById("emailParticipant[" + 0 + "]").value;
+            let emailTextBox = document.getElementById("EmailTextBox").value;
+            let emailSubject = document.getElementById("EmailSubject").value;
+
+
+            if (emailSubject.length > 0) {
+                document.getElementById("EmailSubject").classList.remove("allSidesRed");
+                document.getElementById("EmailSubject").classList.add("allSidesGreen");
+
+            } else {
+                document.getElementById("EmailSubject").classList.remove("allSidesGreen");
+                document.getElementById("EmailSubject").classList.add("allSidesRed");
+                try {
+                    document.getElementById("joinLinkTextRow[" + 0 + "]").style.display = "none"
+                } catch (e) {
+                }
+
+            }
+            disableButtonsEmailCopy();
+
+            if (emailTextBox.length > 0) {
+                document.getElementById("EmailTextBox").classList.remove("allSidesRed");
+                document.getElementById("EmailTextBox").classList.add("allSidesGreen");
+
+            } else {
+                document.getElementById("EmailTextBox").classList.remove("allSidesGreen");
+                document.getElementById("EmailTextBox").classList.add("allSidesRed");
+                try {
+                    document.getElementById("joinLinkTextRow[" + 0 + "]").style.display = "none"
+                } catch (e) {
+                }
+
+            }
+
+
+            if (nameParticipant.length > 0) {
+                document.getElementById("nameParticipant[" + 0 + "]").classList.remove("allSidesRed");
+                document.getElementById("nameParticipant[" + 0 + "]").classList.add("allSidesGreen");
+
+            } else {
+                document.getElementById("nameParticipant[" + 0 + "]").classList.remove("allSidesGreen");
+                document.getElementById("nameParticipant[" + 0 + "]").classList.add("allSidesRed");
+                try {
+                    document.getElementById("joinLinkTextRow[" + 0 + "]").style.display = "none"
+                } catch (e) {
+                }
+
+
+            }
+
+
+            if (isValid != true) {
+                if (emailParticipantZero.length > 0) {
+                    typer.classList.remove("allSidesGreen");
+                    typer.classList.add("allSidesRed");
+                } else {
+                    try {
+                        document.getElementById("joinLinkTextRow[" + 0 + "]").classList.remove("d-flex");
+                        document.getElementById("joinLinkTextRow[" + 0 + "]").style.display = "none";
+                    } catch (e) {
+                    }
+
+                }
+
+                participant.classList.add("disable-button-participants")
+                envelopeParticipant.classList.add("disable-button-participants")
+
+            } else {
+                if (emailParticipantZero.length > 0) {
+
+                    typer.classList.remove("allSidesRed");
+                    typer.classList.add("allSidesGreen");
+                }
+                if ((nameParticipant.length > 0) && (meetingId.length > 0) && (meetingPassword.length > 0) && (emailTextBox.length > 0) && (emailSubject.length > 0)) {
+
+                    participant.classList.remove("disable-button-participants")
+                    envelopeParticipant.classList.remove("disable-button-participants")
+
+                } else {
+
+                    participant.classList.add("disable-button-participants")
+                    envelopeParticipant.classList.add("disable-button-participants")
+                    try {
+                        document.getElementById("joinLinkTextRow[" + 0 + "]").classList.remove("d-flex");
+
+                        document.getElementById("joinLinkTextRow[" + 0 + "]").style.display = "none"
+                    } catch (e) {
+                    }
+
+                }
+            }
+            disableButtonsEmailCopy();
+
+        }, timeoutVal);
+    }
+
+    /////****--------------------------------------****////////
+</script>
+
+<script>
+    function onlyNumberKey(evt) {
+
+        // Only ASCII charactar in that range allowed
+        var ASCIICode = (evt.which) ? evt.which : evt.keyCode
+        if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
+            return false;
+        return true;
+    }
+</script>
+<script src="https://source.zoom.us/1.8.0/lib/vendor/react.min.js"></script>
+<script src="https://source.zoom.us/1.8.0/lib/vendor/react-dom.min.js"></script>
+<script src="https://source.zoom.us/1.8.0/lib/vendor/redux.min.js"></script>
+<script src="https://source.zoom.us/1.8.0/lib/vendor/redux-thunk.min.js"></script>
+<!--<script src="https://source.zoom.us/1.8.0/lib/vendor/jquery.min.js"></script>-->
+<script src="https://source.zoom.us/1.8.0/lib/vendor/lodash.min.js"></script>
+<script src="https://source.zoom.us/zoom-meeting-1.8.0.min.js"></script>
+
+
+<script src="js/tool.js"></script>
+<script src="js/vconsole.min.js"></script>
+<script src="js/index.js"></script>
+
+<script>
+    // document.getElementById("EmailTextBox").value = "CACIP is inviting you to a scheduled Zoom meeting.\n";
+    // document.getElementById("EmailSubject").value = "CACIP Zoom Meeting Invitation\n";
+
+
+</script>
+
+<!--<script type="text/javascript">-->
+<!--    AddListenerValidateEmail();-->
+<!--</script>-->
+
+<script>
+
+
+    document.getElementById("zmmtg-root").style.display = "none"
+    document.getElementById("nav-tool").style.display = "none"
+
+    let participantZero = document.getElementById("copyParticipant[0]")
+
+    let envelopeParticipantZero = document.getElementById("envelopeParticipant[0]")
+    // participantZero.classList.add("disable-button-participants")
+    // envelopeParticipantZero.classList.add("disable-button-participants")
+
+    var hs = document.getElementsByTagName('style');
+
+
+    for (var x = 0; x < 15; x++) {
+        for (var i = 0, max = 10; i < max; i++) {
+            try {
+                hs[i].parentNode.removeChild(hs[i]);
+            } catch (e) {
+            }
+        }
+    }
+</script>
+
+<link href="css/zoom.css" rel="stylesheet" type="text/css">
+
+
+<script>
+
+
+    function disableButtonsEmailCopy() {
+        let i;
+        for (x = 0; x < 11; x++) {
+            try {
+                let emailParticipantId = document.getElementById("emailParticipant[" + x + "]")
+                let nameParticipantId = document.getElementById("nameParticipant[" + x + "]")
+
+                let emailParticipant = document.getElementById("emailParticipant[" + x + "]").value;
+                let nameParticipant = document.getElementById("nameParticipant[" + x + "]").value;
+
+
+                if (nameParticipant.length > 0) {
+                    nameParticipantId.classList.add("allSidesGreen");
+                    nameParticipantId.classList.remove("allSidesRed");
+                } else {
+                    nameParticipantId.classList.remove("allSidesGreen");
+                    nameParticipantId.classList.add("allSidesRed");
+                }
+                if (emailParticipant.length > 0) {
+                    emailParticipantId.classList.add("allSidesGreen");
+                    emailParticipantId.classList.remove("allSidesRed");
+                } else {
+                    emailParticipantId.classList.remove("allSidesGreen");
+                    emailParticipantId.classList.add("allSidesRed");
+                }
+
+
+            } catch (e) {
+            }
+
+        }
+
+
+    }
+
+
+
+    function PopulateParticipants() {
+
+    }
+
+    function ClearMeetingParticipants() {
+
+
+        for (let i = 0; i < 11; i++) {
+            try {
+                document.getElementsByClassName("participants")[i].value = '';
+                document.getElementsByClassName("participants")[i].classList.remove("allSidesGreen");
+                document.getElementsByClassName("participants")[i].classList.add("allSidesRed");
+                document.getElementsByClassName("emailParticipant")[i].value = '';
+                document.getElementsByClassName("emailParticipant")[i].classList.remove("allSidesGreen");
+                document.getElementsByClassName("emailParticipant")[i].classList.add("allSidesRed");
+            } catch (e) {
+
+            }
+
+        }
+        disableButtonsEmailCopy();
+    }
+
+    function AddListenerValidateEmail(x) {
+        try {
+            /////****Event Listener for Email Validation****////////
+            let timer, timeoutVal = 500; // time it takes to wait for user to stop typing in ms
+            const typer = document.getElementById("emailParticipant[" + x + "]");
+            typer.addEventListener('keypress', handleKeyPress);
+            typer.addEventListener('keyup', handleKeyUp);
+            document.getElementById("nameParticipant[" + x + "]").addEventListener('keypress', handleKeyPress);
+            document.getElementById("nameParticipant[" + x + "]").addEventListener('keyup', handleKeyUp);
+
+            document.getElementById("EmailTextBox").addEventListener('keypress', handleKeyPress);
+            document.getElementById("EmailTextBox").addEventListener('keyup', handleKeyUp);
+
+            // when user is pressing down on keys, clear the timeout
+            function handleKeyPress(e) {
+                window.clearTimeout(timer);
+            }
+
+            // when the user has stopped pressing on keys, set the timeout
+            // if the user presses on keys before the timeout is reached, then this timeout is canceled
+            function handleKeyUp(e) {
+                window.clearTimeout(timer); // prevent errant multiple timeouts from being generated
+                timer = window.setTimeout(() => {
+                    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                    let isValid = re.test(String(typer.value.toString()).toLowerCase());
+                    let participant = document.getElementById("copyParticipant[" + x + "]")
+                    let envelopeParticipant = document.getElementById("envelopeParticipant[" + x + "]")
+                    let nameParticipant = document.getElementById("nameParticipant[" + x + "]").value
+                    // let meetingId = document.getElementById("meetingId").value
+                    // let meetingPassword = document.getElementById("meetingPassword").value
+                    let emailParticipantZero = document.getElementById("emailParticipant[" + x + "]").value;
+                    // let emailTextBox = document.getElementById("EmailTextBox").value;
+                    // let emailSubject = document.getElementById("EmailSubject").value;
+
+
+                    if (nameParticipant.length > 0) {
+                        document.getElementById("nameParticipant[" + x + "]").classList.remove("allSidesRed");
+                        document.getElementById("nameParticipant[" + x + "]").classList.add("allSidesGreen");
+
+                    } else {
+                        document.getElementById("nameParticipant[" + x + "]").classList.remove("allSidesGreen");
+                        document.getElementById("nameParticipant[" + x + "]").classList.add("allSidesRed");
+                        try {
+                            document.getElementById("joinLinkTextRow[" + x + "]").classList.remove("d-flex");
+
+                            document.getElementById("joinLinkTextRow[" + x + "]").style.display = "none"
+                        } catch (e) {
+                        }
+                    }
+
+
+                    if (isValid != true) {
+                        if (emailParticipantZero.length > 0) {
+
+                            typer.classList.remove("allSidesGreen");
+                            typer.classList.add("allSidesRed");
+                        } else {
+                            try {
+                                document.getElementById("joinLinkTextRow[" + x + "]").classList.remove("d-flex");
+
+                                document.getElementById("joinLinkTextRow[" + x + "]").style.display = "none"
+                            } catch (e) {
+                            }
+
+                        }
+
+                        // participant.classList.add("disable-button-participants")
+                        // envelopeParticipant.classList.add("disable-button-participants")
+
+
+                    } else {
+                        if (emailParticipantZero.length > 0) {
+
+                            typer.classList.remove("allSidesRed");
+                            typer.classList.add("allSidesGreen");
+                        } else {
+                            try {
+                                document.getElementById("joinLinkTextRow[" + x + "]").classList.remove("d-flex");
+
+                                document.getElementById("joinLinkTextRow[" + x + "]").style.display = "none"
+                            } catch (e) {
+                            }
+                        }
+
+                        // if ((nameParticipant.length > 0)) {
+                        //
+                        //     participant.classList.remove("disable-button-participants")
+                        //     envelopeParticipant.classList.remove("disable-button-participants")
+                        // } else {
+                        //
+                        //     participant.classList.add("disable-button-participants")
+                        //     envelopeParticipant.classList.add("disable-button-participants")
+                        //     try {
+                        //         document.getElementById("joinLinkTextRow[" + x + "]").classList.remove("d-flex");
+                        //
+                        //         document.getElementById("joinLinkTextRow[" + x + "]").style.display = "none"
+                        //     } catch (e) {
+                        //     }
+                        //
+                        // }
+                    }
+
+                }, timeoutVal);
+            }
+        } catch (e) {
+
+        }
+    }
+
+    /////****--------------------------------------****////////
+    function AddListenerValidateMeetingDetails() {
+        disableButtonsEmailCopy();
+
+
+        let timer, timeoutVal = 500; // time it takes to wait for user to stop typing in ms
+
+        document.getElementById("hostId").addEventListener('keypress', handleKeyPress);
+        document.getElementById("hostId").addEventListener('keyup', handleKeyUp);
+        document.getElementById("hostEmail").addEventListener('keypress', handleKeyPress);
+        document.getElementById("hostEmail").addEventListener('keyup', handleKeyUp);
+        document.getElementById("meetingId").addEventListener('keypress', handleKeyPress);
+        document.getElementById("meetingId").addEventListener('keyup', handleKeyUp);
+        document.getElementById("meetingPassword").addEventListener('keypress', handleKeyPress);
+        document.getElementById("meetingPassword").addEventListener('keyup', handleKeyUp);
+
+        // when user is pressing down on keys, clear the timeout
+        function handleKeyPress(e) {
+            window.clearTimeout(timer);
+        }
+
+        // when the user has stopped pressing on keys, set the timeout
+        // if the user presses on keys before the timeout is reached, then this timeout is canceled
+        function handleKeyUp(e) {
+            window.clearTimeout(timer); // prevent errant multiple timeouts from being generated
+            timer = window.setTimeout(() => {
+
+                let hostName = document.getElementById("hostId").value
+                let hostEmail = document.getElementById("hostEmail").value
+                let meetingId = document.getElementById("meetingId").value
+                let meetingPassword = document.getElementById("meetingPassword").value
+
+                const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                let isValid = re.test(String(document.getElementById("hostEmail").value.toString()).toLowerCase());
+
+                if (hostName.length > 0) {
+                    document.getElementById("hostId").classList.remove("allSidesRed");
+                    document.getElementById("hostId").classList.add("allSidesGreen");
+
+                } else {
+                    document.getElementById("hostId").classList.remove("allSidesGreen");
+                    document.getElementById("hostId").classList.add("allSidesRed");
+
+                }
+                if (meetingId.length > 0) {
+                    document.getElementById("meetingId").classList.remove("allSidesRed");
+                    document.getElementById("meetingId").classList.add("allSidesGreen");
+
+                } else {
+                    document.getElementById("meetingId").classList.remove("allSidesGreen");
+                    document.getElementById("meetingId").classList.add("allSidesRed");
+                    disableButtonsEmailCopy()
+
+                }
+                if (meetingPassword.length > 0) {
+                    document.getElementById("meetingPassword").classList.remove("allSidesRed");
+                    document.getElementById("meetingPassword").classList.add("allSidesGreen");
+                } else {
+                    document.getElementById("meetingPassword").classList.remove("allSidesGreen");
+                    document.getElementById("meetingPassword").classList.add("allSidesRed");
+                }
+                if (!(hostEmail.length > 0)) {
+                    document.getElementById("hostEmail").classList.remove("allSidesGreen");
+                    document.getElementById("hostEmail").classList.add("allSidesRed");
+                }
+
+                if (hostEmail.length > 0) {
+
+                    if (isValid != true) {
+                        document.getElementById("hostEmail").classList.remove("allSidesGreen");
+                        document.getElementById("hostEmail").classList.add("allSidesRed");
+                    } else {
+                        document.getElementById("hostEmail").classList.remove("allSidesRed");
+                        document.getElementById("hostEmail").classList.add("allSidesGreen");
+                    }
+                }
+
+
+                if (isValid == true) {
+                    if ((hostName.length > 0) & (hostEmail.length > 0) & (meetingId.length > 0) & (meetingPassword.length > 0)) {
+                        document.getElementById("startMeeting").classList.remove("disable-button-meeting")
+                        document.getElementById("startMeeting").style.marginTop = "8px"
+
+                    } else {
+                        document.getElementById("startMeeting").classList.add("disable-button-meeting")
+                    }
+                    disableButtonsEmailCopy();
+
+                }
+
+            }, timeoutVal);
+        }
+    }
+
+
+
+
+    var settings = {
+        "url": "https://"+window.location.hostname+":4000/requestedMeetings",
+        "method": "GET",
+        "timeout": 0,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+
+    };
+
+    $.ajax(settings).done(function (response) {
+
+        var selected = false;
+
+        var arrMain = [];
+        var idMap = {
+
+        };
+        for (i = 0; i < response.length; i++) {
+            var arr = [];
+
+
+            let timezone = response[i].time.timezone
+            let duration = response[i].time.duration +" minutes"
+            let id = response[i]._id
+            let title = response[i].title
+            let description = response[i].description
+            let date = response[i].time.date
+            // console.log("Title : "+title+" Date "+date)
+
+
+            const DateTime = luxon.DateTime;
+            let localTimeZone = DateTime.local().zoneName
+            const dtLocal = DateTime.fromISO(date, {zone: localTimeZone});
+
+
+            var formattedDate = dtLocal.toFormat('MM/dd/yyyy h:mm:ss')
+
+
+
+            idMap[id] = response[i];
+
+
+            arr.push(id);
+            arr.push(title);
+            arr.push(formattedDate);
+            arr.push(duration);
+            arrMain.push(arr);
+        }
+
+        //yyyyyyyy
+        localStorage.setItem("idMapRequestedMeetings", JSON.stringify(idMap));
+
+
+        var meetingObject = {};
+        meetingObject.data = arrMain
+
+        var table = $('#datatable').DataTable( {
+            // "destroy":true,
+            // "autoWidth": false,
+            // "lengthChange": false,
+            // "info": false,
+            // "searching": false,
+            // "bSort": false,
+            data: meetingObject.data,
+            "pageLength": 10,
+            columns: [
+                { title: "ID"},
+                { title: "Title"},
+                { title: "Date" },
+                { title: "Duration" }
+            ],
+            "columnDefs": [
+                {
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }
+            ]
+
+        } );
+
+
+
+        $(document).ready(function() {
+            var table = $('#datatable').DataTable();
+
+            $('#datatable tbody').on( 'click', 'tr', function () {
+
+
+                if ( $(this).hasClass('selected') ) {
+
+                    $(this).removeClass('selected');
+                }
+                else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                    selected = true;
+                }
+            } );
+
+            $('#button').click( function () {
+
+                table.row('.selected').remove().draw( false );
+            } );
+        } );
+
+
+        $(document).ready(function() {
+            $('#datatable').DataTable();
+            document.getElementsByClassName("sorting")[0].style.width="35%"
+            document.getElementsByClassName("sorting")[1].style.width="35%"
+            document.getElementsByClassName("sorting")[2].style.width="30%"
+            document.getElementsByClassName("sorting")[0].innerText=lang.titleColumn
+            // document.getElementsByClassName("sorting")[1].innerText=lang.dateColumn
+            document.getElementsByClassName("sorting")[2].innerText=lang.durationColumn
+            try {document.getElementById("datatable_length").innerHTML = "<div class=\"dataTables_length\" id=\"datatable_length\"><label>" + lang.show + " <select name=\"datatable_length\" aria-controls=\"datatable\" class=\"\"><option value=\"10\">10</option><option value=\"25\">25</option><option value=\"50\">50</option><option value=\"100\">100</option></select> " + lang.entries + "</label></div>"}catch (e) {}
+            try {document.getElementById("datatableHistory_length").innerHTML = "<div class=\"dataTables_length\" id=\"datatableHistory_length\"><label>" + lang.show + " <select name=\"datatable_length\" aria-controls=\"datatable\" class=\"\"><option value=\"10\">10</option><option value=\"25\">25</option><option value=\"50\">50</option><option value=\"100\">100</option></select> " + lang.entries + "</label></div>"}catch (e) {}
+            try{document.getElementById("datatable_info").remove()}catch (e) {}
+            try{document.getElementById("datatableHistory_info").remove()}catch (e) {}
+            try{document.getElementById("datatable_paginate").innerHTML="<div class=\"dataTables_paginate paging_simple_numbers\" id=\"datatable_paginate\"><a class=\"paginate_button previous disabled\" aria-controls=\"datatable\" data-dt-idx=\"0\" tabindex=\"-1\" id=\"datatable_previous\">"+lang.previous+"</a><span><a class=\"paginate_button current\" aria-controls=\"datatable\" data-dt-idx=\"1\" tabindex=\"0\">1</a></span><a class=\"paginate_button next disabled\" aria-controls=\"datatable\" data-dt-idx=\"2\" tabindex=\"-1\" id=\"datatable_next\">"+lang.next+"</a></div>"}catch (e) {}
+            try{document.getElementById("datatableHistory_paginate").innerHTML="<div class=\"dataTables_paginate paging_simple_numbers\" id=\"datatableHistory_paginate\"><a class=\"paginate_button previous disabled\" aria-controls=\"datatable\" data-dt-idx=\"0\" tabindex=\"-1\" id=\"datatable_previous\">"+lang.previous+"</a><span><a class=\"paginate_button current\" aria-controls=\"datatable\" data-dt-idx=\"1\" tabindex=\"0\">1</a></span><a class=\"paginate_button next disabled\" aria-controls=\"datatable\" data-dt-idx=\"2\" tabindex=\"-1\" id=\"datatable_next\">"+lang.next+"</a></div>"}catch (e) {}
+            try{document.getElementById("datatableHistory_filter").innerHTML="<div id=\"datatableHistory_filter\" class=\"dataTables_filter\"><label>"+lang.search+":<input type=\"search\" class=\"\" placeholder=\"\" aria-controls=\"datatableHistory\"></label></div>"}catch (e) {}
+            try{document.getElementById("datatable_filter").innerHTML="<div id=\"datatable_filter\" class=\"dataTables_filter\"><label>"+lang.search+":<input type=\"search\" class=\"\" placeholder=\"\" aria-controls=\"datatableHistory\"></label></div>"}catch (e) {}
+
+        });
+
+        $('#datatable tbody').on('click', 'tr', function () {
+
+
+
+            var elements = document.getElementsByClassName("fad fa-minus");
+            while(elements.length > 0){
+                elements[0].click();;
+            }
+
+            if ( $(this).hasClass('selected') ) {
+
+                ClearMeetingParticipants();
+                document.getElementById("createMeeting").classList.add("disable-button-participants")
+                document.getElementById("sendInvite").classList.add("disable-button-participants")
+                document.getElementById("extraInfoPanel").style.display="none"
+
+
+            }else {
+
+
+                var rowId = table.row(this).data()[0];
+
+                document.getElementById("meetingTitleBox").value = idMap[rowId].title
+                document.getElementById("meetingDescriptionBox").value = idMap[rowId].description
+                document.getElementById("nameParticipant[0]").value = idMap[rowId].host.name
+                document.getElementById("emailParticipant[0]").value = idMap[rowId].host.email
+
+                for (x = 0; x < idMap[rowId].participants.length; x++) {
+                    document.getElementById("addParticipant").click();
+
+                    var temp = x + 1
+                    document.getElementById("nameParticipant[" + temp + "]").value = idMap[rowId].participants[x].name
+                    document.getElementById("emailParticipant[" + temp + "]").value = idMap[rowId].participants[x].email
+
+                }
+
+                disableButtonsEmailCopy();
+
+
+                document.getElementById("createMeeting").classList.remove("disable-button-participants")
+                document.getElementById("extraInfoPanel").style.display="block"
+
+                localStorage.setItem("selectedRow", JSON.stringify(idMap[rowId]));
+
+            }
+
+
+
+
+        });
+
+    });
+
+
+
+
+    function SendInvite(){
+
+        // console.log("SENDING INVITE")
+
+        var selectedRow = JSON.parse(localStorage.getItem("selectedRow"));
+
+
+
+        let createMeetinghostEmail  = "test@scio.systems"
+        let createMeetingTitle  = selectedRow.title
+        let createMeetingDate  = selectedRow.time.date
+        let createMeetingDuration  = selectedRow.time.duration
+        let createMeetingTimezone  = selectedRow.time.timezone
+        let recordId  = selectedRow._id
+
+
+
+
+        //****Delete and add to history MEETING***//////
+        var settings = {
+            "url": "https://"+window.location.hostname+":4000/requestedMeetingsRemove",
+            "method": "POST",
+            "timeout": 0,
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "data": JSON.stringify({"id":recordId}),
+        };
+
+        $.ajax(settings).done(function (response) {
+            // console.log(response);
+        });
+
+
+        var settings = {
+            "url": "https://"+window.location.hostname+":4000/addToHistory",
+            "method": "POST",
+            "timeout": 0,
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "data": JSON.stringify(selectedRow),
+        };
+
+        $.ajax(settings).done(function (response) {
+            // console.log("resp"+response)
+
+        });
+
+
+    };
+
+    function CreateMeeting(){
+
+
+
+        var selectedRow = JSON.parse(localStorage.getItem("selectedRow"));
+
+
+        let createMeetingDescription  = selectedRow.description
+        let createMeetinghostEmail  = "test@scio.systems"
+        let createMeetingTitle  = selectedRow.title
+        let createMeetingDate  = selectedRow.time.date
+        let createMeetingDuration  = selectedRow.time.duration
+        let createMeetingTimezone  = selectedRow.time.timezone
+        let recordId  =selectedRow._id
+
+        // console.log("CREATE MEETING TIME :"+createMeetingDate)
+        // console.log("CREATE MEETING TIMEZONE :"+createMeetingTimezone)
+        const DateTime = luxon.DateTime;
+
+        let localTimeZone = DateTime.local().zoneName
+        const dtLocal = DateTime.fromISO(createMeetingDate, {zone: localTimeZone});
+
+
+        // console.log(dtLocal.toISO())
+
+
+        // // console.log("Creating Meeting")
+
+        document.getElementById("createMeeting").classList.add("disable-button-participants")
+
+        var settings = {
+            "url": "https://"+window.location.hostname+":4000/create_meeting",
+            "method": "POST",
+            "timeout": 0,
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "data": JSON.stringify({
+                "createMeetinghostEmail":createMeetinghostEmail,
+                "createMeetingTitle":createMeetingTitle,
+                "createMeetingDate":dtLocal.toISO(),
+                "createMeetingDuration":createMeetingDuration,
+                "createMeetingTimezone":localTimeZone,
+                "createMeetingDescription":createMeetingDescription
+
+
+            }),
+        };
+
+        $.ajax(settings).done(function (response) {
+            // // console.log(response);
+
+            let responseJson = JSON.parse(response)
+
+
+
+
+            localStorage.setItem("id", responseJson.id);
+            localStorage.setItem("host_email", responseJson.host_email);
+            localStorage.setItem("password", responseJson.password);
+            localStorage.setItem("host_id", responseJson.host_id);
+            localStorage.setItem("start_url", responseJson.start_url);
+            localStorage.setItem("join_url", responseJson.join_url);
+
+            if( responseJson.id.toString().length >0){
+
+                $("#successCreateMeetingModal").modal('show')
+
+                document.getElementById("successCreateMeetingModalText").innerText=lang.successCreateMeetingModalText
+                document.getElementById("sendInvite").classList.remove("disable-button-participants")
+            }else{
+                $("#failCreateMeetingModal").modal('show')
+                document.getElementById("failCreateMeetingModalText").innerText=lang.failCreateMeetingModalText
+
+            }
+
+
+        });
+
+
+
+
+        //xxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    };
+
+
+    $(function() {
+        $('#togglerViewId').click(function() {
+
+            document.getElementById("extraInfoPanel").style.display="none"
+
+
+            if(document.getElementById("togglerViewId").getAttribute("aria-pressed").toString().includes("false")){
+
+
+                document.getElementById("tableView").style.display="block"
+                document.getElementById("calendar").style.display="none"
+                document.getElementById("timezoneSelector").style.display="none"
+                document.getElementById("time-zone-selector").style.display="none"
+
+
+                // document.getElementById("timezoneDiv").style.display="block"
+
+
+                var elements = document.getElementsByClassName("fad fa-minus");
+                while(elements.length > 0){
+                    elements[0].click();;
+                }
+
+                document.getElementById("meetingTitleBox").value = '',
+                    document.getElementById("meetingDescriptionBox").value = '';
+                document.getElementById("nameParticipant[0]").value = '';
+                document.getElementById("nameParticipant[0]").classList.remove("allSidesGreen");
+                document.getElementById("nameParticipant[0]").classList.add("allSidesRed");
+                document.getElementById("emailParticipant[0]").value = '';
+                document.getElementById("emailParticipant[0]").classList.remove("allSidesGreen");
+                document.getElementById("emailParticipant[0]").classList.add("allSidesRed");
+
+                ClearMeetingParticipants();
+                document.getElementById("createMeeting").classList.add("disable-button-participants")
+                document.getElementById("sendInvite").classList.add("disable-button-participants")
+                for (i = 0; i < document.getElementsByClassName("fc-event").length; i++) {
+
+                    document.getElementsByClassName("fc-event")
+                        [i].style.backgroundColor = '#9AC43C'
+                    document.getElementsByClassName("fc-event")
+                        [i].style.borderColor = '#9AC43C'
+                    document.getElementsByClassName("fc-event")
+                        [i].style.color = 'white'
+                }
+
+            }else{
+                //PPPPPPPPPPPPPPPPPPPPPPPPPPPP
+                // // console.log("table")
+                document.getElementById("tableView").style.display="none"
+                document.getElementById("calendar").style.display="block"
+                document.getElementById("timezoneSelector").style.display="block"
+                document.getElementById("time-zone-selector").style.display="block"
+
+                document.getElementsByClassName("fc-dayGridMonth-button")[0].click();
+
+
+
+                var elements = document.getElementsByClassName("fad fa-minus");
+                while(elements.length > 0){
+                    elements[0].click();;
+                }
+
+                document.getElementById("meetingTitleBox").value = '';
+                document.getElementById("meetingDescriptionBox").value = '';
+                document.getElementById("nameParticipant[0]").value = '';
+                document.getElementById("nameParticipant[0]").classList.remove("allSidesGreen");
+                document.getElementById("nameParticipant[0]").classList.add("allSidesRed");
+                document.getElementById("emailParticipant[0]").value = '';
+                document.getElementById("emailParticipant[0]").classList.remove("allSidesGreen");
+                document.getElementById("emailParticipant[0]").classList.add("allSidesRed");
+
+                ClearMeetingParticipants();
+                document.getElementById("createMeeting").classList.add("disable-button-participants")
+                document.getElementById("sendInvite").classList.add("disable-button-participants")
+
+                for(let x=0;x<document.getElementsByClassName("odd").length;x++){
+
+                    document.getElementsByClassName("odd")[x].classList.remove("selected")
+                }
+                for(let x=0;x<document.getElementsByClassName("even").length;x++){
+
+                    document.getElementsByClassName("even")[x].classList.remove("selected")
+                }
+
+            }
+
+            // $('#console-event').html('Toggle: ' + $(this).prop('checked'))
+        })
+    })
+
+    const DateTime = luxon.DateTime;
+    let localTimeZone = DateTime.local().zoneName
+    var initialTimeZone = localTimeZone;
+
+
+    document.getElementById("time-zone-selector").innerHTML="                    <select style=\"margin-top: 5px;margin-left: 5px;\" id='time-zone-selector'>\n" +
+        "                        <option selected value="+localTimeZone+">"+localTimeZone+"</option>\n" +
+        "                        <option value='UTC'>UTC</option>\n" +
+        "                    </select>"
+
+
+
+    var timeZoneSelectorEl = document.getElementById('time-zone-selector');
+    var loadingEl = document.getElementById('loading');
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+
+        eventClick: function(info) {
+
+            const DateTime = luxon.DateTime;
+
+            const dtNow = DateTime.fromISO(info.event._context.dateProfileGenerator.nowDate);
+
+            const dtSelected = DateTime.fromISO(info.event.startStr);
+
+            let nowTimeInteger = dtNow.ts
+            let selectedTimeInteger = dtSelected.ts
+
+            // console.log(nowTimeInteger)
+            // console.log(selectedTimeInteger)
+            try {
+                if (selectedTimeInteger > nowTimeInteger) {
+
+
+                    for (i = 0; i < document.getElementsByClassName("fc-event").length; i++) {
+
+                        document.getElementsByClassName("fc-event")
+                            [i].style.backgroundColor = '#29b5a8'
+                        document.getElementsByClassName("fc-event")
+                            [i].style.borderColor = '#29b5a8'
+                        document.getElementsByClassName("fc-event")
+                            [i].style.color = 'white'
+                    }
+
+                    info.el.style.borderColor = '#225765';
+                    info.el.style.backgroundColor = '#225765';
+
+
+                    var elements = document.getElementsByClassName("fad fa-minus");
+                    while (elements.length > 0) {
+                        elements[0].click();
+                        ;
+                    }
+                    var idMap = JSON.parse(localStorage.getItem("idMapRequestedMeetings"));
+                    var rowId = info.event.id;
+
+                    // console.log("GGGGGGGGGGGGG")
+                    document.getElementById("meetingTitleBox").value = idMap[rowId].title
+                    document.getElementById("meetingDescriptionBox").value = idMap[rowId].description
+                    document.getElementById("nameParticipant[0]").value = idMap[rowId].host.name
+                    document.getElementById("emailParticipant[0]").value = idMap[rowId].host.email
+
+                    for (x = 0; x < idMap[rowId].participants.length; x++) {
+                        document.getElementById("addParticipant").click();
+
+                        var temp = x + 1
+                        document.getElementById("nameParticipant[" + temp + "]").value = idMap[rowId].participants[x].name
+                        document.getElementById("emailParticipant[" + temp + "]").value = idMap[rowId].participants[x].email
+
+                    }
+                    disableButtonsEmailCopy();
+                    document.getElementById("createMeeting").classList.remove("disable-button-participants")
+                    // console.log("x3")
+                    document.getElementById("extraInfoPanel").style.display = "block"
+
+                    localStorage.setItem("selectedRow", JSON.stringify(idMap[rowId]));
+
+                }
+            }catch (e) {
+
+            }
+        },
+
+
+        themeSystem: 'standard',
+        initialView: 'dayGridMonth',
+        selectable: true,
+        timeZone: initialTimeZone,
+
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+        },
+
+        loading: function (bool) {
+            if (bool) {
+                loadingEl.style.display = 'inline'; // show
+            } else {
+                loadingEl.style.display = 'none'; // hide
+            }
+        },
+
+        eventTimeFormat: {hour: 'numeric', minute: '2-digit', timeZoneName: 'short'}
+
+    });
+
+    calendar.render();
+
+    FullCalendar.requestJson('GET', 'https://fullcalendar.io/demo-timezones.json', {}, function (timeZones) {
+        timeZones.forEach(function (timeZone) {
+            var optionEl;
+            const DateTime = luxon.DateTime;
+            let localTimeZone = DateTime.local().zoneName
+
+            if(timeZone.toString()===localTimeZone){
+
+                // console.log(localTimeZone)
+                optionEl = document.createElement('option');
+                optionEl.value = timeZone;
+                optionEl.innerText = timeZone;
+                optionEl.setAttribute ("selected", true);
+
+                timeZoneSelectorEl.appendChild(optionEl);
+
+            }else{
+                optionEl = document.createElement('option');
+                optionEl.value = timeZone;
+                optionEl.innerText = timeZone;
+                timeZoneSelectorEl.appendChild(optionEl);
+            }
+        });
+    }, function () {
+        // failure
+    });
+
+    // when the timezone selector changes, dynamically change the calendar option
+    timeZoneSelectorEl.addEventListener('change', function () {
+        // // console.log("I AM CHANGING TIMEZONE :" + this.value)
+        const DateTime = luxon.DateTime;
+        let localTimeZone = DateTime.local().zoneName
+        // console.log("I AM CHANGING TIMEZONE :" + this.value)
+        localStorage.setItem("TimezonePlugin",this.value);
+
+        calendar.setOption('timeZone', this.value);
+        calendar.destroy()
+        calendar.render()
+        calendar.setOption('timeZone', this.value);
+    });
+
+
+    var settings = {
+        "url": "https://"+window.location.hostname+":4000/requestedMeetings",
+        "method": "GET",
+        "timeout": 0,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+
+    };
+    $.ajax(settings).done(function (response) {
+        const DateTime = luxon.DateTime;
+        let localTimeZone = DateTime.local().zoneName
+
+
+        for (i = 0; i < response.length; i++) {
+
+            let timezone = response[i].time.timezone
+            let duration = response[i].time.duration
+            let id = response[i]._id
+            let title = response[i].title
+            let description = response[i].description
+
+            let date = response[i].time.date
+
+            const dtLocal = DateTime.fromISO(date, {zone: localTimeZone});
+            var startMeeting = dtLocal.toISO();
+            var finishMeeting = dtLocal.plus({ minutes: duration }).toISO()
+
+
+            const dtNow = DateTime.fromISO(new Date().getTime());
+
+            const dtSelected = DateTime.fromISO(startMeeting);
+
+            let nowTimeInteger = dtNow.ts
+            let selectedTimeInteger = dtSelected.ts
+
+            // console.log(nowTimeInteger)
+            // console.log(selectedTimeInteger)
+
+            if (selectedTimeInteger > nowTimeInteger) {
+                // console.log("xblue")
+
+
+                calendar.addEvent({
+                    timezone: localTimeZone,
+                    id: id,
+                    title: title,
+                    start: startMeeting,
+                    end: finishMeeting,
+                    color: '#4FBBC5'
+                });
+
+            }else{
+                // console.log("xbrown")
+
+                calendar.addEvent({
+                    timezone: localTimeZone,
+                    id: id,
+                    title: title,
+                    start: startMeeting,
+                    end: finishMeeting,
+                    color: '#BE6445'
+                });
+
+
+            }
+
+        }
+
+    });
+
+
+
+
+
+    document.getElementById("calendar").style.display="block"
+
+
+    $(function() {
+        $('#togglerId').click(function() {
+
+            // console.log(document.getElementsByClassName("btn-toggle.btn-lg:before"))
+
+            if(document.getElementById("togglerId").getAttribute("aria-pressed").toString().includes("false")){
+
+                // document.getElementById("MeetingHeader").innerHTML = "Meeting Scheduled"
+                document.getElementById("MeetingHeaderScheduled").style.display="block"
+                document.getElementById("MeetingHeader").style.display="none"
+
+                var settings = {
+                    "url": "https://"+window.location.hostname+":4000/requestedMeetingsHistory",
+                    "method": "GET",
+                    "timeout": 0,
+                    "headers": {
+                        "Content-Type": "application/json"
+                    },
+
+                };
+
+                $.ajax(settings).done(function (response) {
+
+                    var selected = false;
+
+                    var arrMain = [];
+                    var idMap = {
+
+                    };
+                    for (i = 0; i < response.length; i++) {
+                        var arr = [];
+
+
+                        let timezone = response[i].time.timezone
+                        let duration = response[i].time.duration +" minutes"
+                        let id = response[i]._id
+                        let title = response[i].title
+                        let description = response[i].description
+                        let date = response[i].time.date
+                        var startMeeting = moment(date).toDate();
+                        var finishMeeting = moment(date).add(duration, 'm').toDate();
+
+                        idMap[id] = response[i];
+
+
+                        const DateTime = luxon.DateTime;
+                        let localTimeZone = DateTime.local().zoneName
+                        const dtLocal = DateTime.fromISO(date, {zone: localTimeZone});
+
+
+                        var formattedDate = dtLocal.toFormat('MM/dd/yyyy h:mm:ss')
+
+                        arr.push(id);
+                        arr.push(title);
+                        arr.push(formattedDate);
+                        arr.push(duration);
+                        arrMain.push(arr);
+                    }
+
+                    var meetingObject = {};
+                    meetingObject.data = arrMain
+
+                    var table = $('#datatableHistory').DataTable( {
+                        // "destroy":true,
+                        // "autoWidth": false,
+                        // "lengthChange": false,
+                        // "info": false,
+                        // "searching": false,
+                        // "bSort": false,
+                        data: meetingObject.data,
+                        "pageLength": 10,
+                        columns: [
+                            { title: "ID"},
+                            { title: "Title"},
+                            { title: "Date" },
+                            { title: "Duration" }
+                        ],
+                        "columnDefs": [
+                            {
+                                "targets": [0],
+                                "visible": false,
+                                "searchable": false
+                            }
+                        ]
+
+                    } );
+
+
+
+                    $(document).ready(function() {
+                        $('#datatableHistory').DataTable();
+                        document.getElementsByClassName("sorting")[0].style.width="35%"
+                        document.getElementsByClassName("sorting")[1].style.width="35%"
+                        document.getElementsByClassName("sorting")[2].style.width="30%"
+                        document.getElementsByClassName("sorting")[0].innerText=lang.titleColumn
+                        // document.getElementsByClassName("sorting")[1].innerText=lang.dateColumn
+                        document.getElementsByClassName("sorting")[2].innerText=lang.durationColumn
+                        try {document.getElementById("datatable_length").innerHTML = "<div class=\"dataTables_length\" id=\"datatable_length\"><label>" + lang.show + " <select name=\"datatable_length\" aria-controls=\"datatable\" class=\"\"><option value=\"10\">10</option><option value=\"25\">25</option><option value=\"50\">50</option><option value=\"100\">100</option></select> " + lang.entries + "</label></div>"}catch (e) {}
+                        try {document.getElementById("datatableHistory_length").innerHTML = "<div class=\"dataTables_length\" id=\"datatableHistory_length\"><label>" + lang.show + " <select name=\"datatable_length\" aria-controls=\"datatable\" class=\"\"><option value=\"10\">10</option><option value=\"25\">25</option><option value=\"50\">50</option><option value=\"100\">100</option></select> " + lang.entries + "</label></div>"}catch (e) {}
+                        try{document.getElementById("datatable_info").remove()}catch (e) {}
+                        try{document.getElementById("datatableHistory_info").remove()}catch (e) {}
+                        try{document.getElementById("datatable_paginate").innerHTML="<div class=\"dataTables_paginate paging_simple_numbers\" id=\"datatable_paginate\"><a class=\"paginate_button previous disabled\" aria-controls=\"datatable\" data-dt-idx=\"0\" tabindex=\"-1\" id=\"datatable_previous\">"+lang.previous+"</a><span><a class=\"paginate_button current\" aria-controls=\"datatable\" data-dt-idx=\"1\" tabindex=\"0\">1</a></span><a class=\"paginate_button next disabled\" aria-controls=\"datatable\" data-dt-idx=\"2\" tabindex=\"-1\" id=\"datatable_next\">"+lang.next+"</a></div>"}catch (e) {}
+                        try{document.getElementById("datatableHistory_paginate").innerHTML="<div class=\"dataTables_paginate paging_simple_numbers\" id=\"datatableHistory_paginate\"><a class=\"paginate_button previous disabled\" aria-controls=\"datatable\" data-dt-idx=\"0\" tabindex=\"-1\" id=\"datatable_previous\">"+lang.previous+"</a><span><a class=\"paginate_button current\" aria-controls=\"datatable\" data-dt-idx=\"1\" tabindex=\"0\">1</a></span><a class=\"paginate_button next disabled\" aria-controls=\"datatable\" data-dt-idx=\"2\" tabindex=\"-1\" id=\"datatable_next\">"+lang.next+"</a></div>"}catch (e) {}
+                        try{document.getElementById("datatableHistory_filter").innerHTML="<div id=\"datatableHistory_filter\" class=\"dataTables_filter\"><label>"+lang.search+":<input type=\"search\" class=\"\" placeholder=\"\" aria-controls=\"datatableHistory\"></label></div>"}catch (e) {}
+                        try{document.getElementById("datatable_filter").innerHTML="<div id=\"datatable_filter\" class=\"dataTables_filter\"><label>"+lang.search+":<input type=\"search\" class=\"\" placeholder=\"\" aria-controls=\"datatableHistory\"></label></div>"}catch (e) {}
+
+                    });
+
+                    document.getElementById("datatable_wrapper").remove();
+                    var iDiv = document.createElement('table');
+                    iDiv.id = 'datatable';
+                    iDiv.className = 'compact display';
+                    iDiv.style.width="100%"
+                    document.getElementById("tablearea").append(iDiv);
+
+
+                });
+
+                // // console.log("history")
+
+                calendar.removeAllEvents()
+
+                ///Meeting History Accepted START///
+                // var settings = {
+                //     "url": "https://"+window.location.hostname+":4000/requestedMeetingsHistory",
+                //     "method": "GET",
+                //     "timeout": 0,
+                //     "headers": {
+                //         "Content-Type": "application/json"
+                //     },
+                //
+                // };
+                // $.ajax(settings).done(function (response) {
+                //     const DateTime = luxon.DateTime;
+                //     let localTimeZone = DateTime.local().zoneName
+                //
+                //     for (i = 0; i < response.length; i++) {
+                //
+                //         let timezone = response[i].time.timezone
+                //         let duration = response[i].time.duration
+                //         let id = response[i]._id
+                //         let title = response[i].title
+                //         let description = response[i].description
+                //
+                //         let date = response[i].time.date
+                //
+                //         const dtLocal = DateTime.fromISO(date, {zone: localTimeZone});
+                //         var startMeeting = dtLocal.toISO();
+                //         var finishMeeting = dtLocal.plus({ minutes: duration }).toISO()
+                //
+                //         // // console.log("id : "+id)
+                //
+                //         calendar.addEvent({
+                //             timezone: localTimeZone,
+                //             id: id,
+                //             title: title,
+                //             start: startMeeting,
+                //             end: finishMeeting,
+                //             color: 'red'
+                //         });
+                //
+                //     }
+                //
+                //
+                // });
+
+
+                ///Meeting History Accepted END///
+
+                var settings = {
+                    "url": "https://"+window.location.hostname+":4000/meetings",
+                    "method": "POST",
+                    "timeout": 0,
+                    "headers": {
+                        "Content-Type": "application/json"
+                    },
+                    "data": JSON.stringify({"email": "panagiotis@scio.systems"}),
+                };
+                $.ajax(settings).done(function (response) {
+
+                    const DateTime = luxon.DateTime;
+                    let localTimeZone = DateTime.local().zoneName
+
+                    for (i = 0; i < response.upcomingMeetingsModel.upcomingMeetings.length; i++) {
+
+                        let timezone = response.upcomingMeetingsModel.upcomingMeetings[i].timezone
+                        let duration = response.upcomingMeetingsModel.upcomingMeetings[i].duration
+                        let uuid = response.upcomingMeetingsModel.upcomingMeetings[i].uuid
+                        let title = response.upcomingMeetingsModel.upcomingMeetings[i].title
+                        let date = response.upcomingMeetingsModel.upcomingMeetings[i].date
+
+
+
+                        const dt = DateTime.fromISO(date, {zone: timezone});
+
+                        const dtLocal = DateTime.fromISO(date, {zone: localTimeZone});
+
+                        var startMeeting = dtLocal.toISO();
+                        var finishMeeting = dtLocal.plus({ minutes: duration }).toISO()
+
+                        const dtNow = DateTime.fromISO(new Date().getTime());
+
+                        const dtSelected = DateTime.fromISO(startMeeting);
+
+                        let nowTimeInteger = dtNow.ts
+                        let selectedTimeInteger = dtSelected.ts
+
+
+                        if (selectedTimeInteger > nowTimeInteger) {
+
+                            calendar.addEvent({
+                                timezone: localTimeZone,
+                                title: title,
+                                start: startMeeting,
+                                end: finishMeeting,
+                                color: '#9AC43C'
+
+                            });
+
+                        }else {
+
+                            calendar.addEvent({
+                                timezone: localTimeZone,
+                                title: title,
+                                start: startMeeting,
+                                end: finishMeeting,
+                                color: '#BE6445'
+
+                            });
+
+                        }
+
+                    }
+
+
+                    calendar.setOption('timeZone', localTimeZone);
+
+
+                });
+
+
+
+
+
+            }else{
+                calendar.removeAllEvents()
+
+                var settings = {
+                    "url": "https://"+window.location.hostname+":4000/requestedMeetings",
+                    "method": "GET",
+                    "timeout": 0,
+                    "headers": {
+                        "Content-Type": "application/json"
+                    },
+
+                };
+                $.ajax(settings).done(function (response) {
+
+
+                    for (i = 0; i < response.length; i++) {
+
+                        let timezone = response[i].time.timezone
+                        let duration = response[i].time.duration
+                        let id = response[i]._id
+                        let title = response[i].title
+                        let description = response[i].description
+
+                        let date = response[i].time.date
+
+                        const DateTime = luxon.DateTime;
+                        let localTimeZone = DateTime.local().zoneName
+                        const dtLocal = DateTime.fromISO(date, {zone: localTimeZone});
+                        var startMeeting = dtLocal.toISO();
+                        var finishMeeting = dtLocal.plus({ minutes: duration }).toISO()
+
+
+                        const dtNow = DateTime.fromISO(new Date().getTime());
+
+                        const dtSelected = DateTime.fromISO(startMeeting);
+
+                        let nowTimeInteger = dtNow.ts
+                        let selectedTimeInteger = dtSelected.ts
+
+                        if (selectedTimeInteger > nowTimeInteger) {
+
+
+                            calendar.addEvent({
+                                timezone: localTimeZone,
+                                id: id,
+                                title: title,
+                                start: startMeeting,
+                                end: finishMeeting,
+                                color: '#29b5a8'
+                            });
+
+                        }else{
+
+                            calendar.addEvent({
+                                timezone: localTimeZone,
+                                id: id,
+                                title: title,
+                                start: startMeeting,
+                                end: finishMeeting,
+                                color: '#BE6445'
+                            });
+
+                        }
+
+                    }
+
+                });
+
+
+                document.getElementById("MeetingHeaderScheduled").style.display="none"
+                document.getElementById("MeetingHeader").style.display="block"
+
+                var settings = {
+                    "url": "https://"+window.location.hostname+":4000/requestedMeetings",
+                    "method": "GET",
+                    "timeout": 0,
+                    "headers": {
+                        "Content-Type": "application/json"
+                    },
+
+                };
+
+                $.ajax(settings).done(function (response) {
+
+                    var selected = false;
+
+                    var arrMain = [];
+                    var idMap = {
+
+                    };
+                    for (i = 0; i < response.length; i++) {
+                        var arr = [];
+
+
+                        let timezone = response[i].time.timezone
+                        let duration = response[i].time.duration +" minutes"
+                        let id = response[i]._id
+                        let title = response[i].title
+                        let description = response[i].description
+                        let date = response[i].time.date
+                        idMap[id] = response[i];
+
+
+                        const DateTime = luxon.DateTime;
+                        let localTimeZone = DateTime.local().zoneName
+                        const dtLocal = DateTime.fromISO(date, {zone: localTimeZone});
+
+
+                        var formattedDate = dtLocal.toFormat('MM/dd/yyyy h:mm:ss')
+
+                        arr.push(id);
+                        arr.push(title);
+                        arr.push(formattedDate);
+                        arr.push(duration);
+                        arrMain.push(arr);
+                    }
+
+                    var meetingObject = {};
+                    meetingObject.data = arrMain
+
+                    var table = $('#datatable').DataTable( {
+                        // "destroy":true,
+                        // "autoWidth": false,
+                        // "lengthChange": false,
+                        // "info": false,
+                        // "searching": false,
+                        // "bSort": false,
+                        data: meetingObject.data,
+                        "pageLength": 10,
+                        columns: [
+                            { title: "ID"},
+                            { title: "Title"},
+                            { title: "Date" },
+                            { title: "Duration" }
+                        ],
+                        "columnDefs": [
+                            {
+                                "targets": [0],
+                                "visible": false,
+                                "searchable": false
+                            }
+                        ]
+
+                    } );
+
+
+
+                    $(document).ready(function() {
+                        var table = $('#datatable').DataTable();
+
+                        $('#datatable tbody').on( 'click', 'tr', function () {
+
+
+                            if ( $(this).hasClass('selected') ) {
+
+                                $(this).removeClass('selected');
+                            }
+                            else {
+                                table.$('tr.selected').removeClass('selected');
+                                $(this).addClass('selected');
+                                selected = true;
+                            }
+                        } );
+
+                        $('#button').click( function () {
+
+                            table.row('.selected').remove().draw( false );
+                        } );
+                    } );
+
+
+                    $(document).ready(function() {
+                        $('#datatable').DataTable();
+                        document.getElementsByClassName("sorting")[0].style.width="35%"
+                        document.getElementsByClassName("sorting")[1].style.width="35%"
+                        document.getElementsByClassName("sorting")[2].style.width="30%"
+                        document.getElementsByClassName("sorting")[0].innerText=lang.titleColumn
+                        // document.getElementsByClassName("sorting")[1].innerText=lang.dateColumn
+                        document.getElementsByClassName("sorting")[2].innerText=lang.durationColumn
+                        try {document.getElementById("datatable_length").innerHTML = "<div class=\"dataTables_length\" id=\"datatable_length\"><label>" + lang.show + " <select name=\"datatable_length\" aria-controls=\"datatable\" class=\"\"><option value=\"10\">10</option><option value=\"25\">25</option><option value=\"50\">50</option><option value=\"100\">100</option></select> " + lang.entries + "</label></div>"}catch (e) {}
+                        try {document.getElementById("datatableHistory_length").innerHTML = "<div class=\"dataTables_length\" id=\"datatableHistory_length\"><label>" + lang.show + " <select name=\"datatable_length\" aria-controls=\"datatable\" class=\"\"><option value=\"10\">10</option><option value=\"25\">25</option><option value=\"50\">50</option><option value=\"100\">100</option></select> " + lang.entries + "</label></div>"}catch (e) {}
+                        try{document.getElementById("datatable_info").remove()}catch (e) {}
+                        try{document.getElementById("datatableHistory_info").remove()}catch (e) {}
+                        try{document.getElementById("datatable_paginate").innerHTML="<div class=\"dataTables_paginate paging_simple_numbers\" id=\"datatable_paginate\"><a class=\"paginate_button previous disabled\" aria-controls=\"datatable\" data-dt-idx=\"0\" tabindex=\"-1\" id=\"datatable_previous\">"+lang.previous+"</a><span><a class=\"paginate_button current\" aria-controls=\"datatable\" data-dt-idx=\"1\" tabindex=\"0\">1</a></span><a class=\"paginate_button next disabled\" aria-controls=\"datatable\" data-dt-idx=\"2\" tabindex=\"-1\" id=\"datatable_next\">"+lang.next+"</a></div>"}catch (e) {}
+                        try{document.getElementById("datatableHistory_paginate").innerHTML="<div class=\"dataTables_paginate paging_simple_numbers\" id=\"datatableHistory_paginate\"><a class=\"paginate_button previous disabled\" aria-controls=\"datatable\" data-dt-idx=\"0\" tabindex=\"-1\" id=\"datatable_previous\">"+lang.previous+"</a><span><a class=\"paginate_button current\" aria-controls=\"datatable\" data-dt-idx=\"1\" tabindex=\"0\">1</a></span><a class=\"paginate_button next disabled\" aria-controls=\"datatable\" data-dt-idx=\"2\" tabindex=\"-1\" id=\"datatable_next\">"+lang.next+"</a></div>"}catch (e) {}
+                        try{document.getElementById("datatableHistory_filter").innerHTML="<div id=\"datatableHistory_filter\" class=\"dataTables_filter\"><label>"+lang.search+":<input type=\"search\" class=\"\" placeholder=\"\" aria-controls=\"datatableHistory\"></label></div>"}catch (e) {}
+                        try{document.getElementById("datatable_filter").innerHTML="<div id=\"datatable_filter\" class=\"dataTables_filter\"><label>"+lang.search+":<input type=\"search\" class=\"\" placeholder=\"\" aria-controls=\"datatableHistory\"></label></div>"}catch (e) {}
+
+                    });
+
+                    $('#datatable tbody').on('click', 'tr', function () {
+
+
+
+                        var elements = document.getElementsByClassName("fad fa-minus");
+                        while(elements.length > 0){
+                            elements[0].click();
+                        }
+
+                        if ( $(this).hasClass('selected') ) {
+
+                            ClearMeetingParticipants();
+                            // // console.log("hello")
+                            document.getElementById("createMeeting").classList.add("disable-button-participants")
+                            document.getElementById("sendInvite").classList.add("disable-button-participants")
+
+
+                        }else {
+
+
+
+                            var rowId = table.row(this).data()[0];
+
+                            document.getElementById("meetingTitleBox").value = idMap[rowId].title
+                            document.getElementById("meetingDescriptionBox").value = idMap[rowId].description
+                            document.getElementById("nameParticipant[0]").value = idMap[rowId].host.name
+                            document.getElementById("emailParticipant[0]").value = idMap[rowId].host.email
+
+                            for (x = 0; x < idMap[rowId].participants.length; x++) {
+                                document.getElementById("addParticipant").click();
+
+                                var temp = x + 1
+                                document.getElementById("nameParticipant[" + temp + "]").value = idMap[rowId].participants[x].name
+                                document.getElementById("emailParticipant[" + temp + "]").value = idMap[rowId].participants[x].email
+
+                            }
+
+                            disableButtonsEmailCopy();
+
+                            document.getElementById("createMeeting").classList.remove("disable-button-participants")
+
+
+                            // console.log("x2")
+
+                            localStorage.setItem("selectedRow", JSON.stringify(idMap[rowId]));
+
+                        }
+
+
+                    });
+
+
+                    document.getElementById("datatableHistory_wrapper").remove();
+                    var iDiv = document.createElement('table');
+                    iDiv.id = 'datatableHistory';
+                    iDiv.className = 'compact display';
+                    iDiv.style.width="100%"
+                    document.getElementById("tableareaHistory").append(iDiv);
+
+                });
+
+
+
+            }
+
+            // $('#console-event').html('Toggle: ' + $(this).prop('checked'))
+        })
+    })
+
+
+
+
+
+    function ChangeLanguage() {
+
+
+        // // console.log(getComputedStyle(document.getElementById('togglerViewId'), ':before').getPropertyValue('content'));
+
+
+        if (document.getElementById("countryButton").classList.value.includes("flag flag-gb")) {
+
+            document.getElementById("countryButton").classList.add("flag-ru")
+            document.getElementById("countryButton").classList.remove("flag-gb")
+
+            localStorage.setItem("language", "ru");
+            calendar.setOption('locale', 'ru');
+
+
+        } else {
+
+            document.getElementById("countryButton").classList.add("flag-gb")
+            document.getElementById("countryButton").classList.remove("flag-ru")
+
+            localStorage.setItem("language", "gb");
+            calendar.setOption('locale', 'en');
+
+        }
+
+
+        let language = localStorage.getItem("language");
+
+
+        $.getScript("languages/lang." + language + ".js", function (data, textStatus, jqxhr) {
+
+            document.getElementById("timezoneSelector").innerText = lang.timezoneSelector
+
+            document.getElementById("meetingParticipants").innerText = lang.meetingParticipants
+            document.getElementById("nameParticipant[0]").placeholder = lang.hostUsername
+            document.getElementById("emailParticipant[0]").placeholder = lang.hostEmail
+            document.getElementById("meetingDescription").innerText = lang.meetingDescription
+            document.getElementById("meetingTitle").innerText = lang.meetingTitle
+
+            document.getElementById("createMeeting").innerText = lang.createMeeting
+            document.getElementById("sendInvite").innerText = lang.sendInvite
+
+
+            try{document.getElementsByClassName("sorting")[0].innerText=lang.titleColumn }catch (e) {}
+            try{document.getElementsByClassName("sorting")[1].innerText=lang.dateColumn }catch (e) {}
+            try{ document.getElementsByClassName("sorting")[2].innerText=lang.durationColumn }catch (e) {}
+
+
+            document.getElementById("MeetingHeaderScheduled").innerText=lang.meetingHeaderScheduled
+            document.getElementById("MeetingHeader").innerText=lang.meetingHeader
+            try {document.getElementById("datatable_length").innerHTML = "<div class=\"dataTables_length\" id=\"datatable_length\"><label>" + lang.show + " <select name=\"datatable_length\" aria-controls=\"datatable\" class=\"\"><option value=\"10\">10</option><option value=\"25\">25</option><option value=\"50\">50</option><option value=\"100\">100</option></select> " + lang.entries + "</label></div>"}catch (e) {}
+            try {document.getElementById("datatableHistory_length").innerHTML = "<div class=\"dataTables_length\" id=\"datatableHistory_length\"><label>" + lang.show + " <select name=\"datatable_length\" aria-controls=\"datatable\" class=\"\"><option value=\"10\">10</option><option value=\"25\">25</option><option value=\"50\">50</option><option value=\"100\">100</option></select> " + lang.entries + "</label></div>"}catch (e) {}
+            try{document.getElementById("datatable_paginate").innerHTML="<div class=\"dataTables_paginate paging_simple_numbers\" id=\"datatable_paginate\"><a class=\"paginate_button previous disabled\" aria-controls=\"datatable\" data-dt-idx=\"0\" tabindex=\"-1\" id=\"datatable_previous\">"+lang.previous+"</a><span><a class=\"paginate_button current\" aria-controls=\"datatable\" data-dt-idx=\"1\" tabindex=\"0\">1</a></span><a class=\"paginate_button next disabled\" aria-controls=\"datatable\" data-dt-idx=\"2\" tabindex=\"-1\" id=\"datatable_next\">"+lang.next+"</a></div>"}catch (e) {}
+            try{document.getElementById("datatableHistory_paginate").innerHTML="<div class=\"dataTables_paginate paging_simple_numbers\" id=\"datatableHistory_paginate\"><a class=\"paginate_button previous disabled\" aria-controls=\"datatable\" data-dt-idx=\"0\" tabindex=\"-1\" id=\"datatable_previous\">"+lang.previous+"</a><span><a class=\"paginate_button current\" aria-controls=\"datatable\" data-dt-idx=\"1\" tabindex=\"0\">1</a></span><a class=\"paginate_button next disabled\" aria-controls=\"datatable\" data-dt-idx=\"2\" tabindex=\"-1\" id=\"datatable_next\">"+lang.next+"</a></div>"}catch (e) {}
+            try{document.getElementById("datatableHistory_filter").innerHTML="<div id=\"datatableHistory_filter\" class=\"dataTables_filter\"><label>"+lang.search+":<input type=\"search\" class=\"\" placeholder=\"\" aria-controls=\"datatableHistory\"></label></div>"}catch (e) {}
+            try{document.getElementById("datatable_filter").innerHTML="<div id=\"datatable_filter\" class=\"dataTables_filter\"><label>"+lang.search+":<input type=\"search\" class=\"\" placeholder=\"\" aria-controls=\"datatableHistory\"></label></div>"}catch (e) {}
+            document.getElementById('togglerViewId').setAttribute('data-before', lang.calendarToggle);
+            document.getElementById('togglerViewId').setAttribute('data-after', lang.tableToggle);
+            document.getElementById('togglerId').setAttribute('data-before', lang.requestsToggle);
+            document.getElementById('togglerId').setAttribute('data-after', lang.scheduledToggle);
+
+
+            document.getElementById("theEmailsAreSent").innerText=lang.theEmailsAreSent
+            document.getElementById("theEmailsAreNotSent").innerText=lang.theEmailsAreNotSent
+
+            document.getElementById("onSuccessRequest").innerText=lang.onSuccessRequest
+            document.getElementById("onFailRequest").innerText=lang.onFailRequest
+
+
+
+            // document.getElementById("scheduleMeeting").innerText = lang.scheduleMeeting
+            // document.getElementById("exampleModalLabel").innerText = lang.exampleModalLabel
+            // document.getElementById("yourSelectedDateTime").innerText = lang.yourSelectedDateTime
+            // document.getElementById("meetingTitle").innerText = lang.meetingTitle
+            // document.getElementById("yourContactDetails").innerText = lang.yourContactDetails
+            // document.getElementById("sendEmail").innerText = lang.sendEmail
+            // document.getElementById("yourParticipants").innerText = lang.yourParticipants
+            // document.getElementById("meetingDescription").innerText = lang.meetingDescription
+            // document.getElementById("contactUsername").placeholder = lang.contactUsername
+            // document.getElementById("contactEmail").placeholder = lang.contactEmail
+            // document.getElementById("timezoneSelector").innerText = lang.timezoneSelector
+
+
+        });
+
+
+    }
+
+
+
+
+</script>
+<script src="languages/lang.gb.js"></script>
+<script>
+
+    document.getElementById('togglerViewId').setAttribute('data-before', lang.calendarToggle);
+    document.getElementById('togglerViewId').setAttribute('data-after', lang.tableToggle);
+    document.getElementById('togglerId').setAttribute('data-before', lang.requestsToggle);
+    document.getElementById('togglerId').setAttribute('data-after', lang.scheduledToggle);
+</script>
+</body>
+</html>

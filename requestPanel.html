@@ -1,0 +1,2309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js" type="text/javascript"></script>
+
+
+    <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+
+
+
+
+
+    <script src='https://cdn.jsdelivr.net/npm/luxon@1.24.1/build/global/luxon.min.js'></script>
+
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.2.0/main.min.js'></script>
+    <script src='    https://cdn.jsdelivr.net/npm/fullcalendar@5.2.0/locales-all.js'></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.2.0/main.min.css" rel="stylesheet">
+    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/luxon@5.2.0/main.global.min.js'></script>
+
+    <link href="https://source.zoom.us/1.8.0/css/react-select.css" rel="stylesheet" type="text/css"/>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+    <script crossorigin="anonymous" src="https://kit.fontawesome.com/2e0d3a5f6b.js"></script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+    <link href="css/country-flag.css" rel="stylesheet" type="text/css">
+    <script src="js/country-flag.js"></script>
+    <link href="css/toggle.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="css/easySelectStyle.css">
+    <script src="js/easySelect.js"></script>
+
+</head>
+<body style="background-color:#e9ecee;">
+
+
+<div class="row" style="margin-bottom: 50px;">
+    <div class="container-fluid" id="navBarContainer" style="padding-right:0px;padding-left: 0px">
+        <nav class=" navbar fixed-top scrolling-navbar white navbar-expand-md font-weight-500 font-bigger"
+             id="navbar"
+             role="navigation">
+            <div class="row" style="width:100%">
+                <div class="col">
+
+                    <a aria-current="page" class="navbar-brand px-1 py-0 mr-0 active" data-test="navbar-brand"
+                       href="https://centralasiaclimateportal.org/"
+                       target="_blank">
+
+                        <img alt="cacip logo"
+                             class="d-inline-block mx-3 nav-logo-colored"
+                             src="images/logo-horizontal-colored.edd3d535.png"
+                             style="width:250px;height:50px;float:left;margin-left: 50px"
+                             title="Central Asia Climate Information Platform | CACIP">
+
+                    </a>
+                </div>
+
+                <div class="col">
+
+                    <a aria-current="page" class="navbar-brand px-1 py-0 mr-0 active" data-test="navbar-brand"
+                       href="https://zoom.us/" style="float:right"
+                       target="_blank">
+                        <img alt="zoom logo"
+                             class="d-inline-block mx-3 nav-logo-colored"
+                             src="images/Powered-by-Zoom.png"
+                             style="height:50px;float:right;margin-right: 50px"
+                        >
+                    </a>
+                </div>
+            </div>
+
+        </nav>
+    </div>
+</div>
+
+
+<div class="container" style="margin-top: 50px">
+    <div class="row">
+
+
+        <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="errorModal" role="dialog"
+             tabindex="-1">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <div class="col-2">
+                                <i aria-hidden="true" class="fad fa-times-circle fa-3x" style="color:red"></i>
+                            </div>
+                            <div class="col-10" style="margin:auto">
+                                <span id="onFailRequest" style="text-align: justify;text-justify: inter-word;">Request not send! Please contact directly with your administrator</span>
+                            </div>
+                        </div>
+                        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                            <i aria-hidden="true" class="fal fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div aria-hidden="true" aria-labelledby="successModalLabel" class="modal fade" id="successModal" role="dialog"
+             tabindex="-1">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <div class="col-2">
+                                <i aria-hidden="true" class="fad fa-check-circle fa-3x" style="color:#9AC43C"></i>
+                            </div>
+                            <div class="col-10" style="margin:auto">
+                                <span id="onSuccessRequest" style="text-align: justify;text-justify: inter-word;">Your Request has been recorded, the CACIP Administrator will contact you in the next 3 days</span>
+                            </div>
+                        </div>
+                        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                            <i class="fal fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-lg-12" style="margin-bottom: 20px;">
+            <div class="card" style="padding-bottom: 10px;">
+                <h1 class="text-center" id="scheduleMeeting">Schedule Meeting</h1>
+            </div>
+        </div>
+
+
+        <div class="col-lg-12" style="margin-bottom: 20px;">
+            <div class="card" style="padding-top:5px;padding-bottom:5px;padding-left:5px">
+                <div id='top'>
+
+                    <div id="timezoneSelector" style='float:left;margin-left: 20px;margin-top: 3px;'>
+                        Timezone:
+                    </div>
+                    <select id='time-zone-selector' style="margin-top: 5px;margin-left: 5px;">
+                        <!--                        <option selected value='local'>local</option>-->
+                        <!--                        <option value='UTC'>UTC</option>-->
+                    </select>
+                    <button class="flag flag-gb" id="countryButton" onclick="ChangeLanguage()"
+                            style="     margin-right: 20px;border: none; float:right"
+                            type="button"></button>
+                    <div style='float:right'>
+                        <span id='loading'></span>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="col-lg-12" style="margin-bottom: 40px;">
+            <div class="card">
+                <div class="card-body" style="   padding-top: 0px;">
+                    <div class="row">
+                        <div class="col-lg-12" id="calendar" style="margin-top: 20px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div aria-hidden="true" aria-labelledby="requestForJoinMeetingLabel" class="modal fade"
+             id="requestForJoinMeeting" role="dialog"
+             tabindex="-1">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content" style="width: fit-content;">
+                    <div class="modal-header">
+                        <h2 class="modal-title" id="requestExampleModalLabel">Join the Meeting</h2>
+                        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                            <i class="fal fa-times"></i>
+                        </button>
+                    </div>
+
+                    <div class="modal-body col-lg-12" style="margin-bottom: 40px;width: max-content;">
+
+                        <div>
+                            <div>
+
+
+                                <h5 id="requestsMeetingTitle" style="padding-top: 15px;">Title</h5>
+
+
+                                <input class=" form-control allSidesGreen" disabled id="requestsMeetingTitleBox"
+                                       maxlength="50" onclick="AddListenerValidateMeetingDetails()"
+                                       placeholder="" style="width: 100%;">
+
+
+                                <h5 id="requestsMeetingDescription" style="padding-top: 15px;">Description</h5>
+
+                                <input class=" form-control  allSidesGreen" disabled id="requestsMeetingDescriptionBox"
+                                       maxlength="500" onclick="AddListenerValidateMeetingDetails()"
+                                       placeholder="" style="width: 100%;height: 80px">
+
+                                <h5 id="requestedYourContactDetails" style="padding-top: 15px;">Your Contact
+                                    Details</h5>
+
+
+                                <div class="row" id="requestedContactDetailsRow">
+                                    <div class="col" style="    padding-top: 3px;">
+                                        <input class=" form-control allSidesRed" id="requestedContactUsername"
+                                               maxlength="50" onclick="AddListenerValidateMeetingDetails()"
+                                               placeholder="Name" style="width: 100%;">
+                                    </div>
+
+                                    <div class="col" style="    padding-top: 3px;">
+                                        <input class=" form-control allSidesRed" id="requestedContactEmail"
+                                               maxlength="50" onclick="AddListenerValidateMeetingDetails()"
+                                               placeholder="Email" style="width: 100%;">
+
+                                    </div>
+                                </div>
+
+                                <div id="infoJoinLinks" style="display: none">
+
+                                    <h5 id="desktopLink" style="padding-top: 15px;">Desktop Link</h5>
+
+                                    <div class="row">
+                                        <div class="col-lg-10">
+
+                                            <input class=" form-control allSidesGreen" disabled id="desktopLinkBox"
+                                                   maxlength="500"
+                                                   placeholder="" style="width: 100%;">
+                                        </div>
+                                        <div class="col-lg-2">
+
+                                            <i class="btn btn-light fad fa-copy fa-2x" href="#"
+                                               onclick="copyDesktopLink()" style="background: #ffffff;"></i>
+
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <h5 id="webLink" style="padding-top: 15px;">Web Link</h5>
+
+                                    <div class="row">
+                                        <div class="col-lg-10">
+                                            <input class=" form-control allSidesGreen" disabled id="webLinkBox"
+                                                   maxlength="500"
+                                                   placeholder="" style="width: 100%;">
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <i class="btn btn-light fad fa-copy fa-2x" href="#"
+                                               onclick="copyWebLink()" style="background: #ffffff; "></i>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+
+
+                                <div class="row">
+
+
+                                    <div class="col" style="    padding-top: 20px;">
+                                        <button class="btn btn-primary disable-button-meeting"
+                                                id="createMeetingUrlForRequested"
+                                                onclick="createMeetingUrlForRequested()"
+                                                style="margin-top: 10px; float: right">Get Join Link
+                                        </button>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div aria-hidden="true" aria-labelledby="requestForJoinMeetingBeforeApproval" class="modal fade"
+             id="requestForJoinMeetingBeforeApproval" role="dialog"
+             tabindex="-1">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content" style="width: 513.36px;">
+                    <div class="modal-header">
+                        <h2 class="modal-title" id="requestForJoinMeetingBeforeApprovalLabel">Join the Meeting</h2>
+                        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                            <i class="fal fa-times"></i>
+                        </button>
+                    </div>
+
+                    <div class="modal-body col-lg-12" style="margin-bottom: 40px;">
+
+                        <div>
+                            <div>
+
+
+                                <h5 id="requestsMeetingTitleBeforeApproval" style="padding-top: 15px;">Title</h5>
+
+
+                                <input class=" form-control allSidesGreen" disabled id="requestsMeetingTitleBoxBeforeApproval"
+                                       maxlength="50" onclick="AddListenerValidateMeetingDetails()"
+                                       placeholder="" style="width: 100%;">
+
+
+                                <h5 id="requestsMeetingDescriptionBeforeApproval" style="padding-top: 15px;">Description</h5>
+
+                                <input class=" form-control  allSidesGreen" disabled id="requestsMeetingDescriptionBoxBeforeApproval"
+                                       maxlength="500" onclick="AddListenerValidateMeetingDetails()"
+                                       placeholder="" style="width: 100%;height: 80px">
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="exampleModal" role="dialog"
+             tabindex="-1">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content" style="width: fit-content;">
+                    <div class="modal-header">
+                        <h2 class="modal-title" id="exampleModalLabel">Request for Meeting</h2>
+                        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                            <i class="fal fa-times"></i>
+                        </button>
+                    </div>
+
+                    <div class="modal-body col-lg-12" id="firstForm" style="margin-bottom: 40px;width: max-content;">
+
+                        <div>
+                            <div>
+
+                                <h5 id="yourSelectedDateTime">Your Selected date & time</h5>
+                                <input class=" form-control allSidesGreen" disabled id="dateAndTimeBox"
+                                       maxlength="500" onclick="AddListenerValidateMeetingDetails()"
+                                       placeholder="" style="width: 100%;">
+                                <h5 id="meetingTitle" style="padding-top: 15px;">Title</h5>
+                                <input class=" form-control allSidesRed" id="meetingTitleBox"
+                                       maxlength="500" onclick="AddListenerValidateMeetingDetails()"
+                                       placeholder="" style="width: 100%;">
+                                <h5 id="meetingDescription" style="padding-top: 15px;">Description</h5>
+                                <input class=" form-control allSidesRed" id="meetingDescriptionBox"
+                                       maxlength="500" onclick="AddListenerValidateMeetingDetails()"
+                                       placeholder="" style="width: 100%;height: 80px">
+
+                                <h5 id="yourContactDetails" style="padding-top: 15px;">Your Contact Details</h5>
+
+                                <div class="row" id="contactDetailsRow">
+                                    <div class="col" style="    padding-top: 3px;">
+                                        <input class=" form-control allSidesRed" id="contactUsername"
+                                               maxlength="500" onclick="AddListenerValidateMeetingDetails()"
+                                               placeholder="Name" style="width: 100%;">
+                                    </div>
+
+                                    <div class="col" style="    padding-top: 3px;">
+                                        <input class=" form-control allSidesRed" id="contactEmail"
+                                               maxlength="500" onclick="AddListenerValidateMeetingDetails()"
+                                               placeholder="Email" style="width: 100%;">
+
+                                    </div>
+                                </div>
+
+
+                                <div class="row" id="firstNextRow">
+
+
+                                    <div class="col" style="    padding-top: 20px;">
+                                        <button class="btn btn-primary disable-button-meeting " id="firstNext"
+                                                onclick="firstNext()"
+                                                style="margin-top: 10px; float: right">Next
+                                        </button>
+                                    </div>
+
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-body col-lg-12" id="secondForm"
+                         style="display:none; margin-bottom: 40px;width: max-content;">
+
+                        <div>
+                            <div>
+
+                                <h5 id="yourParticipants" style="padding-top: 15px;">Your Participants</h5>
+
+                                <div class="row" id="addParticipantsRow">
+                                    <div class="col-12">
+
+
+                                        <div class="row clearfix">
+                                            <div class="col-md-12 table-responsive">
+                                                <div class="list_wrapper">
+                                                    <div class="d-flex flex-row">
+
+
+                                                        <div class="form-group flex-grow-1" style="margin-top: 3px;">
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <input autocomplete="new-password"
+                                                                           class="form-control participants allSidesRed"
+                                                                           id="nameParticipant[0]" placeholder="Name">
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <input autocomplete="new-password"
+                                                                           class="form-control participants allSidesRed"
+                                                                           id="emailParticipant[0]" placeholder="Email">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group"
+                                                             style="margin-top: 3px;margin-bottom: 10px;margin-left: 16px;">
+                                                            <button class="btn btn-primary list_add_button"
+                                                                    style="margin-left: 20px;"
+                                                                    type="button"><i aria-hidden="true"
+                                                                                     class="fad fa-plus"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+
+                                    <div class="col-lg-6" style="    padding-top: 20px;">
+                                        <button class="btn btn-primary " id="firstPrevious"
+                                                onclick="firstPrevious()"
+                                                style="margin-top: 10px; float: left">Previous
+                                        </button>
+                                    </div>
+                                    <div class="col-lg-6" style="    padding-top: 20px;">
+                                        <button class="btn btn-primary " id="secondNext"
+                                                onclick="secondNext()"
+                                                style="margin-top: 10px; float: right">Next
+                                        </button>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-body col-lg-12" id="thirdForm"
+                         style="display:none; margin-bottom: 40px;width: max-content;">
+
+                        <div>
+                            <div>
+
+
+                                <h5 id="interests" style="padding-top: 15px;">Invite Participants by Area
+                                    of Interest</h5>
+
+                                <hr>
+
+                                <div class="row" id="areaOfInterest">
+                                    <div class="col" style="    padding-top: 3px;">
+                                        <h5>
+                                            <button id="water management" onclick="areaOfInterestListener(this.id)" class="btn btn-primary" type="button">
+				                                    <span class="badge badge-pill badge-primary" style="background-color:#225765">	<i class="fal fa-circle" aria-hidden="true"></i>
+                                                    </span>water managament
+                                            </button>
+
+                                            <button id="climate change" onclick="areaOfInterestListener(this.id)" class="btn btn-primary" type="button">
+                                                    <span class="badge badge-pill badge-primary" style="background-color:#225765">	<i class="fal fa-circle" aria-hidden="true"></i>
+                                                    </span> climate change
+                                            </button>
+
+                                            <button id="risk assesment" onclick="areaOfInterestListener(this.id)" class="btn btn-primary" type="button">
+                                                    <span class="badge badge-pill badge-primary" style="background-color:#225765">	<i class="fal fa-circle" aria-hidden="true"></i>
+                                                    </span> risk assessment
+                                            </button>
+                                        </h5>
+                                        <h5>
+                                            <button id="food security" onclick="areaOfInterestListener(this.id)" class="btn btn-primary" type="button">
+                                                       <span class="badge badge-pill badge-primary" style="background-color:#225765">	<i class="fal fa-circle" aria-hidden="true"></i>
+                                                       </span> food security
+                                            </button>
+
+                                            <button id="sustainable agroecosystems" onclick="areaOfInterestListener(this.id)" class="btn btn-primary" type="button">
+                                                         <span class="badge badge-pill badge-primary" style="background-color:#225765">	<i class="fal fa-circle" aria-hidden="true"></i>
+                                                         </span> sustainable agroecosystems
+                                            </button>
+
+                                            <button id="land degradation" onclick="areaOfInterestListener(this.id)" class="btn btn-primary"  type="button">
+                                                        <span class="badge badge-pill badge-primary" style="background-color:#225765">	<i class="fal fa-circle" aria-hidden="true"></i>
+                                                        </span> land degradation
+                                            </button>
+                                        </h5>
+                                        <h5>
+                                            <button id="other" onclick="areaOfInterestListener(this.id)"class="btn btn-primary" type="button">
+                                                    <span class="badge badge-pill badge-primary" style="background-color:#225765">	<i class="fal fa-circle" aria-hidden="true"></i>
+                                                    </span> other
+                                            </button>
+
+                                            <button id="surveys" onclick="areaOfInterestListener(this.id)"class="btn btn-primary" type="button">
+                                                 	<span class="badge badge-pill badge-primary" style="background-color:#225765">	<i class="fal fa-circle" aria-hidden="true"></i>
+                                                    </span> surveys
+                                            </button>
+
+                                            <button id="capacity development" onclick="areaOfInterestListener(this.id)" class="btn btn-primary" type="button">
+                                                    <span class="badge badge-pill badge-primary" style="background-color:#225765">	<i class="fal fa-circle" aria-hidden="true"></i>
+                                                    </span> capacity development
+                                            </button>
+                                        </h5>
+                                    </div>
+                                </div>
+
+
+                                <hr>
+                                <h5 id="interestsCountry" style="padding-top: 15px;">Invite Participants by CountryType a message</h5>
+
+                                <div class="row"  id="easySelectPlugin" style="margin:20px auto">
+                                    <div class="column-lg-12" style="">
+                                        <select id="demo" data-max="300" multiple="multiple">
+                                            <option value="AFG">Afghanistan</option>
+                                            <option value="ALA">Åland Islands</option>
+                                            <option value="ALB">Albania</option>
+                                            <option value="DZA">Algeria</option>
+                                            <option value="ASM">American Samoa</option>
+                                            <option value="AND">Andorra</option>
+                                            <option value="AGO">Angola</option>
+                                            <option value="AIA">Anguilla</option>
+                                            <option value="ATA">Antarctica</option>
+                                            <option value="ATG">Antigua and Barbuda</option>
+                                            <option value="ARG">Argentina</option>
+                                            <option value="ARM">Armenia</option>
+                                            <option value="ABW">Aruba</option>
+                                            <option value="AUS">Australia</option>
+                                            <option value="AUT">Austria</option>
+                                            <option value="AZE">Azerbaijan</option>
+                                            <option value="BHS">Bahamas</option>
+                                            <option value="BHR">Bahrain</option>
+                                            <option value="BGD">Bangladesh</option>
+                                            <option value="BRB">Barbados</option>
+                                            <option value="BLR">Belarus</option>
+                                            <option value="BEL">Belgium</option>
+                                            <option value="BLZ">Belize</option>
+                                            <option value="BEN">Benin</option>
+                                            <option value="BMU">Bermuda</option>
+                                            <option value="BTN">Bhutan</option>
+                                            <option value="BOL">Bolivia, Plurinational State of</option>
+                                            <option value="BES">Bonaire, Sint Eustatius and Saba</option>
+                                            <option value="BIH">Bosnia and Herzegovina</option>
+                                            <option value="BWA">Botswana</option>
+                                            <option value="BVT">Bouvet Island</option>
+                                            <option value="BRA">Brazil</option>
+                                            <option value="IOT">British Indian Ocean Territory</option>
+                                            <option value="BRN">Brunei Darussalam</option>
+                                            <option value="BGR">Bulgaria</option>
+                                            <option value="BFA">Burkina Faso</option>
+                                            <option value="BDI">Burundi</option>
+                                            <option value="KHM">Cambodia</option>
+                                            <option value="CMR">Cameroon</option>
+                                            <option value="CAN">Canada</option>
+                                            <option value="CPV">Cape Verde</option>
+                                            <option value="CYM">Cayman Islands</option>
+                                            <option value="CAF">Central African Republic</option>
+                                            <option value="TCD">Chad</option>
+                                            <option value="CHL">Chile</option>
+                                            <option value="CHN">China</option>
+                                            <option value="CXR">Christmas Island</option>
+                                            <option value="CCK">Cocos (Keeling) Islands</option>
+                                            <option value="COL">Colombia</option>
+                                            <option value="COM">Comoros</option>
+                                            <option value="COG">Congo</option>
+                                            <option value="COD">Congo, the Democratic Republic of the</option>
+                                            <option value="COK">Cook Islands</option>
+                                            <option value="CRI">Costa Rica</option>
+                                            <option value="CIV">Côte d'Ivoire</option>
+                                            <option value="HRV">Croatia</option>
+                                            <option value="CUB">Cuba</option>
+                                            <option value="CUW">Curaçao</option>
+                                            <option value="CYP">Cyprus</option>
+                                            <option value="CZE">Czech Republic</option>
+                                            <option value="DNK">Denmark</option>
+                                            <option value="DJI">Djibouti</option>
+                                            <option value="DMA">Dominica</option>
+                                            <option value="DOM">Dominican Republic</option>
+                                            <option value="ECU">Ecuador</option>
+                                            <option value="EGY">Egypt</option>
+                                            <option value="SLV">El Salvador</option>
+                                            <option value="GNQ">Equatorial Guinea</option>
+                                            <option value="ERI">Eritrea</option>
+                                            <option value="EST">Estonia</option>
+                                            <option value="ETH">Ethiopia</option>
+                                            <option value="FLK">Falkland Islands (Malvinas)</option>
+                                            <option value="FRO">Faroe Islands</option>
+                                            <option value="FJI">Fiji</option>
+                                            <option value="FIN">Finland</option>
+                                            <option value="FRA">France</option>
+                                            <option value="GUF">French Guiana</option>
+                                            <option value="PYF">French Polynesia</option>
+                                            <option value="ATF">French Southern Territories</option>
+                                            <option value="GAB">Gabon</option>
+                                            <option value="GMB">Gambia</option>
+                                            <option value="GEO">Georgia</option>
+                                            <option value="DEU">Germany</option>
+                                            <option value="GHA">Ghana</option>
+                                            <option value="GIB">Gibraltar</option>
+                                            <option value="GRC">Greece</option>
+                                            <option value="GRL">Greenland</option>
+                                            <option value="GRD">Grenada</option>
+                                            <option value="GLP">Guadeloupe</option>
+                                            <option value="GUM">Guam</option>
+                                            <option value="GTM">Guatemala</option>
+                                            <option value="GGY">Guernsey</option>
+                                            <option value="GIN">Guinea</option>
+                                            <option value="GNB">Guinea-Bissau</option>
+                                            <option value="GUY">Guyana</option>
+                                            <option value="HTI">Haiti</option>
+                                            <option value="HMD">Heard Island and McDonald Islands</option>
+                                            <option value="VAT">Holy See (Vatican City State)</option>
+                                            <option value="HND">Honduras</option>
+                                            <option value="HKG">Hong Kong</option>
+                                            <option value="HUN">Hungary</option>
+                                            <option value="ISL">Iceland</option>
+                                            <option value="IND">India</option>
+                                            <option value="IDN">Indonesia</option>
+                                            <option value="IRN">Iran, Islamic Republic of</option>
+                                            <option value="IRQ">Iraq</option>
+                                            <option value="IRL">Ireland</option>
+                                            <option value="IMN">Isle of Man</option>
+                                            <option value="ISR">Israel</option>
+                                            <option value="ITA">Italy</option>
+                                            <option value="JAM">Jamaica</option>
+                                            <option value="JPN">Japan</option>
+                                            <option value="JEY">Jersey</option>
+                                            <option value="JOR">Jordan</option>
+                                            <option value="KAZ">Kazakhstan</option>
+                                            <option value="KEN">Kenya</option>
+                                            <option value="KIR">Kiribati</option>
+                                            <option value="PRK">Korea, Democratic People's Republic of</option>
+                                            <option value="KOR">Korea, Republic of</option>
+                                            <option value="KWT">Kuwait</option>
+                                            <option value="KGZ">Kyrgyzstan</option>
+                                            <option value="LAO">Lao People's Democratic Republic</option>
+                                            <option value="LVA">Latvia</option>
+                                            <option value="LBN">Lebanon</option>
+                                            <option value="LSO">Lesotho</option>
+                                            <option value="LBR">Liberia</option>
+                                            <option value="LBY">Libya</option>
+                                            <option value="LIE">Liechtenstein</option>
+                                            <option value="LTU">Lithuania</option>
+                                            <option value="LUX">Luxembourg</option>
+                                            <option value="MAC">Macao</option>
+                                            <option value="MKD">Macedonia, the former Yugoslav Republic of</option>
+                                            <option value="MDG">Madagascar</option>
+                                            <option value="MWI">Malawi</option>
+                                            <option value="MYS">Malaysia</option>
+                                            <option value="MDV">Maldives</option>
+                                            <option value="MLI">Mali</option>
+                                            <option value="MLT">Malta</option>
+                                            <option value="MHL">Marshall Islands</option>
+                                            <option value="MTQ">Martinique</option>
+                                            <option value="MRT">Mauritania</option>
+                                            <option value="MUS">Mauritius</option>
+                                            <option value="MYT">Mayotte</option>
+                                            <option value="MEX">Mexico</option>
+                                            <option value="FSM">Micronesia, Federated States of</option>
+                                            <option value="MDA">Moldova, Republic of</option>
+                                            <option value="MCO">Monaco</option>
+                                            <option value="MNG">Mongolia</option>
+                                            <option value="MNE">Montenegro</option>
+                                            <option value="MSR">Montserrat</option>
+                                            <option value="MAR">Morocco</option>
+                                            <option value="MOZ">Mozambique</option>
+                                            <option value="MMR">Myanmar</option>
+                                            <option value="NAM">Namibia</option>
+                                            <option value="NRU">Nauru</option>
+                                            <option value="NPL">Nepal</option>
+                                            <option value="NLD">Netherlands</option>
+                                            <option value="NCL">New Caledonia</option>
+                                            <option value="NZL">New Zealand</option>
+                                            <option value="NIC">Nicaragua</option>
+                                            <option value="NER">Niger</option>
+                                            <option value="NGA">Nigeria</option>
+                                            <option value="NIU">Niue</option>
+                                            <option value="NFK">Norfolk Island</option>
+                                            <option value="MNP">Northern Mariana Islands</option>
+                                            <option value="NOR">Norway</option>
+                                            <option value="OMN">Oman</option>
+                                            <option value="PAK">Pakistan</option>
+                                            <option value="PLW">Palau</option>
+                                            <option value="PSE">Palestinian Territory, Occupied</option>
+                                            <option value="PAN">Panama</option>
+                                            <option value="PNG">Papua New Guinea</option>
+                                            <option value="PRY">Paraguay</option>
+                                            <option value="PER">Peru</option>
+                                            <option value="PHL">Philippines</option>
+                                            <option value="PCN">Pitcairn</option>
+                                            <option value="POL">Poland</option>
+                                            <option value="PRT">Portugal</option>
+                                            <option value="PRI">Puerto Rico</option>
+                                            <option value="QAT">Qatar</option>
+                                            <option value="REU">Réunion</option>
+                                            <option value="ROU">Romania</option>
+                                            <option value="RUS">Russian Federation</option>
+                                            <option value="RWA">Rwanda</option>
+                                            <option value="BLM">Saint Barthélemy</option>
+                                            <option value="SHN">Saint Helena, Ascension and Tristan da Cunha</option>
+                                            <option value="KNA">Saint Kitts and Nevis</option>
+                                            <option value="LCA">Saint Lucia</option>
+                                            <option value="MAF">Saint Martin (French part)</option>
+                                            <option value="SPM">Saint Pierre and Miquelon</option>
+                                            <option value="VCT">Saint Vincent and the Grenadines</option>
+                                            <option value="WSM">Samoa</option>
+                                            <option value="SMR">San Marino</option>
+                                            <option value="STP">Sao Tome and Principe</option>
+                                            <option value="SAU">Saudi Arabia</option>
+                                            <option value="SEN">Senegal</option>
+                                            <option value="SRB">Serbia</option>
+                                            <option value="SYC">Seychelles</option>
+                                            <option value="SLE">Sierra Leone</option>
+                                            <option value="SGP">Singapore</option>
+                                            <option value="SXM">Sint Maarten (Dutch part)</option>
+                                            <option value="SVK">Slovakia</option>
+                                            <option value="SVN">Slovenia</option>
+                                            <option value="SLB">Solomon Islands</option>
+                                            <option value="SOM">Somalia</option>
+                                            <option value="ZAF">South Africa</option>
+                                            <option value="SGS">South Georgia and the South Sandwich Islands</option>
+                                            <option value="SSD">South Sudan</option>
+                                            <option value="ESP">Spain</option>
+                                            <option value="LKA">Sri Lanka</option>
+                                            <option value="SDN">Sudan</option>
+                                            <option value="SUR">Suriname</option>
+                                            <option value="SJM">Svalbard and Jan Mayen</option>
+                                            <option value="SWZ">Swaziland</option>
+                                            <option value="SWE">Sweden</option>
+                                            <option value="CHE">Switzerland</option>
+                                            <option value="SYR">Syrian Arab Republic</option>
+                                            <option value="TWN">Taiwan, Province of China</option>
+                                            <option value="TJK">Tajikistan</option>
+                                            <option value="TZA">Tanzania, United Republic of</option>
+                                            <option value="THA">Thailand</option>
+                                            <option value="TLS">Timor-Leste</option>
+                                            <option value="TGO">Togo</option>
+                                            <option value="TKL">Tokelau</option>
+                                            <option value="TON">Tonga</option>
+                                            <option value="TTO">Trinidad and Tobago</option>
+                                            <option value="TUN">Tunisia</option>
+                                            <option value="TUR">Turkey</option>
+                                            <option value="TKM">Turkmenistan</option>
+                                            <option value="TCA">Turks and Caicos Islands</option>
+                                            <option value="TUV">Tuvalu</option>
+                                            <option value="UGA">Uganda</option>
+                                            <option value="UKR">Ukraine</option>
+                                            <option value="ARE">United Arab Emirates</option>
+                                            <option value="GBR">United Kingdom</option>
+                                            <option value="USA">United States</option>
+                                            <option value="UMI">United States Minor Outlying Islands</option>
+                                            <option value="URY">Uruguay</option>
+                                            <option value="UZB">Uzbekistan</option>
+                                            <option value="VUT">Vanuatu</option>
+                                            <option value="VEN">Venezuela, Bolivarian Republic of</option>
+                                            <option value="VNM">Viet Nam</option>
+                                            <option value="VGB">Virgin Islands, British</option>
+                                            <option value="VIR">Virgin Islands, U.S.</option>
+                                            <option value="WLF">Wallis and Futuna</option>
+                                            <option value="ESH">Western Sahara</option>
+                                            <option value="YEM">Yemen</option>
+                                            <option value="ZMB">Zambia</option>
+                                            <option value="ZWE">Zimbabwe</option>
+                                        </select>
+                                    </div>
+
+                                    <hr>
+                                </div>
+                            </div>
+
+                            <div class="row" id="sendEmailToAdminRow">
+
+                                <div class="col-lg-6" style="">
+                                    <button class="btn btn-primary " id="secondPrevious"
+                                            onclick="secondPrevious()"
+                                            style="margin-top: 10px; float: left">Previous
+                                    </button>
+                                </div>
+
+                                <div class="col-lg-6" style="">
+                                    <button class="btn btn-primary disable-button-meeting" id="sendEmail"
+                                            onclick="sendEmailToAdmin()"
+                                            style="margin-top: 10px; float: right">Send Request
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+        $("#add_row").on("click", function () {
+            // Dynamic Rows Code
+
+            // Get max row id and set new id
+            var newid = 0;
+            $.each($("#tab_logic tr"), function () {
+                if (parseInt($(this).data("id")) > newid) {
+                    newid = parseInt($(this).data("id"));
+                }
+            });
+            newid++;
+
+            var tr = $("<tr></tr>", {
+                id: "addr" + newid,
+                "data-id": newid
+            });
+
+            // loop through each td and create new elements with name of newid
+            $.each($("#tab_logic tbody tr:nth(0) td"), function () {
+                var td;
+                var cur_td = $(this);
+
+                var children = cur_td.children();
+
+                // add new td and element if it has a nane
+                if ($(this).data("name") !== undefined) {
+                    td = $("<td></td>", {
+                        "data-name": $(cur_td).data("name")
+                    });
+
+                    var c = $(cur_td).find($(children[0]).prop('tagName')).clone().val("");
+                    c.attr("name", $(cur_td).data("name") + newid);
+                    c.appendTo($(td));
+                    td.appendTo($(tr));
+                } else {
+                    td = $("<td></td>", {
+                        'text': $('#tab_logic tr').length
+                    }).appendTo($(tr));
+                }
+            });
+
+            // add delete button and td
+            /*
+            $("<td></td>").append(
+                $("<button class='btn btn-danger glyphicon glyphicon-remove row-remove'></button>")
+                    .click(function() {
+                        $(this).closest("tr").remove();
+                    })
+            ).appendTo($(tr));
+            */
+
+            // add the new row
+            $(tr).appendTo($('#tab_logic'));
+
+            $(tr).find("td button.row-remove").on("click", function () {
+                $(this).closest("tr").remove();
+            });
+        });
+
+
+        // Sortable Code
+        var fixHelperModified = function (e, tr) {
+            var $originals = tr.children();
+            var $helper = tr.clone();
+
+            $helper.children().each(function (index) {
+                $(this).width($originals.eq(index).width())
+            });
+
+            return $helper;
+        };
+
+        $(".table-sortable tbody").sortable({
+            helper: fixHelperModified
+        }).disableSelection();
+
+        $(".table-sortable thead").disableSelection();
+
+
+        $("#add_row").trigger("click");
+    });
+</script>
+<script>
+
+    function firstNext() {
+
+        document.getElementById("firstForm").style.display = "none"
+        document.getElementById("secondForm").style.display = "block"
+
+
+    }
+
+    function secondNext() {
+        document.getElementById("secondForm").style.display = "none"
+        document.getElementById("thirdForm").style.display = "block"
+
+        $("#demo").easySelect({
+            buttons: true, //
+            search: true,
+            placeholder: 'Choose Country',
+            placeholderColor: '#225765',
+            selectColor: '#225765',
+            itemTitle: 'Countries selected',
+            showEachItem: true,
+            width: '600px',
+            dropdownMaxHeight: '450px',
+        })
+
+
+    }
+
+    function firstPrevious() {
+
+        document.getElementById("firstForm").style.display = "block"
+        document.getElementById("secondForm").style.display = "none"
+    }
+
+    function secondPrevious() {
+        document.getElementById("secondForm").style.display = "block"
+        document.getElementById("thirdForm").style.display = "none"
+    }
+
+    function sendMail(clickedId) {
+        let participantNumber = clickedId[clickedId.length - 2];
+        let meetingId = document.getElementById("meetingId").value
+        let meetingPassword = document.getElementById("meetingPassword").value
+        let meetingGeneratedLink = joinLinkForEmail(participantNumber);
+
+    }
+
+
+</script>
+<script>
+
+
+    $(document).ready(function () {
+
+        var x = 0; //Initial field counter
+        var list_maxField = 10; //Input fields increment limitation
+
+        //Once add button is clicked
+        $('.list_add_button').click(function () {
+
+            //Check maximum number of input fields
+            if (x < list_maxField) {
+                x++; //Increment field counter
+                var list_fieldHTML = '<div class="d-flex flex-row">' +
+
+                    '<div class="form-group flex-grow-1" style="margin-top: 10px;">' +
+                    '<div class="row">' +
+                    '<div class="col-sm-6">' +
+                    '<input autocomplete="new-password" id="nameParticipant[' + x + ']"  onclick="AddListenerValidateParticipants(' + x + ')" placeholder="Name" class="form-control participants allSidesRed"/>' +
+                    '</div>' +
+                    '<div class="col-sm-6">' +
+                    '<input autocomplete="new-password" id="emailParticipant[' + x + ']" onclick="AddListenerValidateParticipants(' + x + ')"  placeholder="Email" class="form-control participants allSidesRed"/>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="form-group" style="margin-top: 10px;margin-bottom: 10px;margin-left: 16px;">' +
+
+                    '<button type="button" style="margin-left: 16px;" href="javascript:void(0);" class="list_remove_button btn btn-danger">' +
+                    '<i class="fad fa-minus"></i></button>' +
+
+
+                    '</div>' +
+                    '</div>'
+
+                ;
+
+
+                //New input field html
+                $('.list_wrapper').append(list_fieldHTML); //Add field html
+
+                let participant = document.getElementById("copyParticipant[" + x + "]");
+                let envelopeParticipant = document.getElementById("envelopeParticipant[" + x + "]");
+
+
+                document.getElementById("nameParticipant[" + x + "]").placeholder = lang.contactUsername
+                document.getElementById("emailParticipant[" + x + "]").placeholder = lang.contactEmail
+
+
+                try {
+                    participant.classList.add("disable-button-participants")
+                    envelopeParticipant.classList.add("disable-button-participants")
+                } catch (e) {
+
+                }
+
+            }
+
+            try {
+                AddListenerValidateEmail(x);
+            } catch (e) {
+
+            }
+
+
+        });
+
+        //Once remove button is clicked
+        $('.list_wrapper').on('click', '.list_remove_button', function () {
+            try {
+                $(this).closest('div.flex-row').remove(); //Remove field html
+
+                document.getElementById("joinLinkTextRow[" + x + "]").remove();
+                x--; //Decrement field counter
+
+            } catch (e) {
+                x--; //Decrement field counter
+
+            }
+        });
+    });
+</script>
+
+
+<script src="https://source.zoom.us/1.8.0/lib/vendor/react.min.js"></script>
+<script src="https://source.zoom.us/1.8.0/lib/vendor/react-dom.min.js"></script>
+<script src="https://source.zoom.us/1.8.0/lib/vendor/redux.min.js"></script>
+<script src="https://source.zoom.us/1.8.0/lib/vendor/redux-thunk.min.js"></script>
+<script src="https://source.zoom.us/1.8.0/lib/vendor/lodash.min.js"></script>
+<script src="https://source.zoom.us/zoom-meeting-1.8.0.min.js"></script>
+
+
+<script>
+
+
+    // document.getElementById("zmmtg-root").style.display = "none"
+    // document.getElementById("nav-tool").style.display = "none"
+
+
+    var hs = document.getElementsByTagName('style');
+
+
+    for (var x = 0; x < 15; x++) {
+        for (var i = 0, max = 10; i < max; i++) {
+            try {
+                hs[i].parentNode.removeChild(hs[i]);
+            } catch (e) {
+            }
+        }
+    }
+</script>
+
+
+<link href="css/zoom.css" rel="stylesheet" type="text/css">
+
+
+<script>
+    const DateTime = luxon.DateTime;
+    let localTimeZone = DateTime.local().zoneName
+    var initialTimeZone = localTimeZone;
+
+
+    //TODO CHECK THISIF WE NEEED UTC
+    // document.getElementById("time-zone-selector").innerHTML="                    <select style=\"margin-top: 5px;margin-left: 5px;\" id='time-zone-selector'>\n" +
+    //     "                        <option selected value="+localTimeZone+">"+localTimeZone+"</option>\n" +
+    //     "                        <option value='UTC'>UTC</option>\n" +
+    //     "                    </select>"
+
+
+    var timeZoneSelectorEl = document.getElementById('time-zone-selector');
+    var loadingEl = document.getElementById('loading');
+    var calendarEl = document.getElementById('calendar');
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+
+
+        eventClick: function (info) {
+
+
+            const DateTime = luxon.DateTime;
+
+            const dtNow = DateTime.fromISO(info.event._context.dateProfileGenerator.nowDate);
+
+            const dtSelected = DateTime.fromISO(info.event.startStr);
+
+            let nowTimeInteger = dtNow.ts
+            let selectedTimeInteger = dtSelected.ts
+
+
+            if (selectedTimeInteger < nowTimeInteger) {
+
+
+            } else {
+                // console.log(info.event._def)
+                //
+                // console.log(info.event._def.ui.backgroundColor)
+                if(info.event._def.ui.backgroundColor == "#4FBBC5"){
+
+                    $("#requestForJoinMeeting").modal('hide')
+                    $("#requestForJoinMeetingBeforeApproval").modal('show')
+
+                }else{
+
+                    $("#requestForJoinMeetingBeforeApproval").modal('hide')
+                    $("#requestForJoinMeeting").modal('show')
+
+                }
+
+
+                localStorage.setItem("requestedMeetingId", info.event.id);
+
+                let timer, timeoutVal = 500; // time it takes to wait for user to stop typing in ms
+
+                document.getElementById("requestedContactUsername").addEventListener('keypress', handleKeyPress);
+                document.getElementById("requestedContactUsername").addEventListener('keyup', handleKeyUp);
+                document.getElementById("requestedContactEmail").addEventListener('keypress', handleKeyPress);
+                document.getElementById("requestedContactEmail").addEventListener('keyup', handleKeyUp);
+
+
+                // when user is pressing down on keys, clear the timeout
+                function handleKeyPress(e) {
+                    window.clearTimeout(timer);
+                }
+
+                // when the user has stopped pressing on keys, set the timeout
+                // if the user presses on keys before the timeout is reached, then this timeout is canceled
+                function handleKeyUp(e) {
+                    window.clearTimeout(timer); // prevent errant multiple timeouts from being generated
+                    timer = window.setTimeout(() => {
+
+                        let requestedContactEmail = document.getElementById("requestedContactEmail").value
+                        let requestedContactUsername = document.getElementById("requestedContactUsername").value
+
+
+                        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                        let isRequestedContactEmailValid = re.test(String(document.getElementById("requestedContactEmail").value.toString()).toLowerCase());
+
+
+                        if ((requestedContactEmail.length > 0) && (requestedContactUsername.length > 0)) {
+                            if (isRequestedContactEmailValid == true) {
+
+                                document.getElementById("createMeetingUrlForRequested").classList.remove("disable-button-meeting")
+
+                            } else {
+                                document.getElementById("createMeetingUrlForRequested").classList.add("disable-button-meeting")
+                            }
+                        } else {
+                            document.getElementById("createMeetingUrlForRequested").classList.add("disable-button-meeting")
+                        }
+
+
+                        if (requestedContactEmail.length > 0) {
+                            if (isRequestedContactEmailValid == true) {
+
+                                document.getElementById("requestedContactEmail").classList.remove("allSidesRed");
+                                document.getElementById("requestedContactEmail").classList.add("allSidesGreen");
+                            } else {
+                                document.getElementById("requestedContactEmail").classList.remove("allSidesGreen");
+                                document.getElementById("requestedContactEmail").classList.add("allSidesRed");
+                            }
+                        } else {
+                            document.getElementById("requestedContactEmail").classList.remove("allSidesGreen");
+                            document.getElementById("requestedContactEmail").classList.add("allSidesRed");
+                        }
+
+
+                        if (requestedContactUsername.length > 0) {
+                            document.getElementById("requestedContactUsername").classList.remove("allSidesRed");
+                            document.getElementById("requestedContactUsername").classList.add("allSidesGreen");
+                        } else {
+                            document.getElementById("requestedContactUsername").classList.remove("allSidesGreen");
+                            document.getElementById("requestedContactUsername").classList.add("allSidesRed");
+                        }
+
+
+                    }, timeoutVal);
+                }
+
+
+                document.getElementById("requestsMeetingTitleBox").value = info.event.title
+                document.getElementById("requestsMeetingDescriptionBox").value = info.event.extendedProps.description
+                document.getElementById("requestsMeetingTitleBoxBeforeApproval").value = info.event.title
+                document.getElementById("requestsMeetingDescriptionBoxBeforeApproval").value = info.event.extendedProps.description
+
+
+
+            }
+
+
+        },
+
+
+        select: function (selectionInfo) {
+            //
+            // alert(selectionInfo.startStr)
+            // alert(selectionInfo.timezone)
+            let timezonePlugin = localStorage.getItem("TimezonePlugin");
+
+            const DateTime = luxon.DateTime;
+
+            const dt = DateTime.fromISO(selectionInfo.startStr, {zone: timezonePlugin});
+            // console.log("luxon timezone LOCAL: "+dtLocal.zoneName);
+            // console.log("luxon date  LOCAL: "+dtLocal.toFormat('dd/mm/yyyy h:mm:ss'));
+
+
+            var selectedDateStart = dt.toFormat('MM/dd/yyyy h:mm:ss')
+            console.log(selectedDateStart)
+
+            var now = moment(selectionInfo.startStr); //todays date
+            var end = moment(selectionInfo.endStr); // another date
+
+            let duration = moment.duration(end.diff(now, 'minutes'));
+
+
+
+            const dtNow = DateTime.fromISO(new Date().getTime());
+            const dtSelected = DateTime.fromISO(selectionInfo.endStr);
+
+            let nowTimeInteger = dtNow.ts
+            let selectedTimeInteger = dtSelected.ts
+
+            if (selectedTimeInteger > nowTimeInteger) {
+
+                $("#exampleModal").modal('show')
+
+                localStorage.setItem("dateBoxDate", dt.toISO());
+                localStorage.setItem("dateBoxDuration", duration + " ");
+
+                document.getElementById("dateAndTimeBox").value = selectedDateStart + " " + lang.duration + duration + " " + lang.minutes
+            }
+        },
+
+        themeSystem: 'standard',
+        initialView: 'timeGridWeek',
+        selectable: true,
+        timeZone: initialTimeZone,
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+        },
+
+        loading: function (bool) {
+            if (bool) {
+                loadingEl.style.display = 'inline'; // show
+            } else {
+                loadingEl.style.display = 'none'; // hide
+            }
+        },
+
+        eventTimeFormat: {hour: 'numeric', minute: '2-digit', timeZoneName: 'short'}
+
+    });
+    calendar.render();
+
+    FullCalendar.requestJson('GET', 'https://fullcalendar.io/demo-timezones.json', {}, function (timeZones) {
+        timeZones.forEach(function (timeZone) {
+            var optionEl;
+            const DateTime = luxon.DateTime;
+            let localTimeZone = DateTime.local().zoneName
+
+            if (timeZone.toString() === localTimeZone) {
+
+                // console.log(localTimeZone)
+                optionEl = document.createElement('option');
+                optionEl.value = timeZone;
+                optionEl.innerText = timeZone;
+                optionEl.setAttribute("selected", true);
+
+                timeZoneSelectorEl.appendChild(optionEl);
+
+            } else {
+                if ((timeZone.toString() === "Asia/Almaty") || (timeZone.toString() === "Asia/Aqtobe")
+                    || (timeZone.toString() === "Asia/Tashkent") || (timeZone.toString() === "Asia/Ashgabat")
+                    || (timeZone.toString() === "Asia/Dushanbe") || (timeZone.toString() === "Asia/Bishkek")
+                    || (timeZone.toString() === "Asia/Tehran") || (timeZone.toString() === "Asia/Ulaanbaatar")
+                    || (timeZone.toString() === "Asia/Choibalsan") || (timeZone.toString() === "Asia/Hovd")
+
+
+                ) {
+                    optionEl = document.createElement('option');
+                    optionEl.value = timeZone;
+                    optionEl.innerText = timeZone;
+                    timeZoneSelectorEl.appendChild(optionEl);
+                }
+            }
+
+            // if (timeZone !== 'local') { // local is already in the list
+
+            // }
+        });
+    }, function () {
+        // failure
+    });
+
+    // when the timezone selector changes, dynamically change the calendar option
+    timeZoneSelectorEl.addEventListener('change', function () {
+        const DateTime = luxon.DateTime;
+        let localTimeZone = DateTime.local().zoneName
+        // console.log("I AM CHANGING TIMEZONE :" + this.value)
+        localStorage.setItem("TimezonePlugin", this.value);
+
+        calendar.setOption('timeZone', this.value);
+        calendar.destroy()
+        calendar.render()
+        calendar.setOption('timeZone', this.value);
+
+
+        // }
+
+    });
+
+
+    var settings = {
+        "url": "https://"+window.location.hostname+":4000/meetings",
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "data": JSON.stringify({"email": "test@scio.systems"}),
+    };
+    $.ajax(settings).done(function (response) {
+
+        const DateTime = luxon.DateTime;
+        let localTimeZone = DateTime.local().zoneName
+
+        for (i = 0; i < response.upcomingMeetingsModel.upcomingMeetings.length; i++) {
+
+            let timezone = response.upcomingMeetingsModel.upcomingMeetings[i].timezone
+            let duration = response.upcomingMeetingsModel.upcomingMeetings[i].duration
+            let uuid = response.upcomingMeetingsModel.upcomingMeetings[i].uuid
+            let meetingId = response.upcomingMeetingsModel.upcomingMeetings[i].meetingId
+
+            let title = response.upcomingMeetingsModel.upcomingMeetings[i].title
+            let date = response.upcomingMeetingsModel.upcomingMeetings[i].date
+            let description = response.upcomingMeetingsModel.upcomingMeetings[i].description
+            const dt = DateTime.fromISO(date, {zone: timezone});
+
+            const dtLocal = DateTime.fromISO(date, {zone: localTimeZone});
+
+            var startMeeting = dtLocal.toISO();
+            var finishMeeting = dtLocal.plus({minutes: duration}).toISO()
+
+
+            const dtNow = DateTime.fromISO(new Date().getTime());
+
+            const dtSelected = DateTime.fromISO(startMeeting);
+
+            let nowTimeInteger = dtNow.ts
+            let selectedTimeInteger = dtSelected.ts
+
+
+            if (selectedTimeInteger > nowTimeInteger) {
+
+                calendar.addEvent({
+                    id: meetingId,
+                    timezone: localTimeZone,
+                    title: title,
+                    description: description,
+                    start: startMeeting,
+                    end: finishMeeting,
+                    color: "#9AC43C"
+
+                });
+            }else{
+                calendar.addEvent({
+                    id: meetingId,
+                    timezone: localTimeZone,
+                    title: title,
+                    description: description,
+                    start: startMeeting,
+                    end: finishMeeting,
+                    color: "#BE6445"
+
+                });
+
+
+            }
+
+        }
+
+
+        calendar.setOption('timeZone', localTimeZone);
+
+
+    });
+
+
+    var settings = {
+        "url": "https://"+window.location.hostname+":4000/requestedMeetings",
+        "method": "GET",
+        "timeout": 0,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+
+    };
+
+    $.ajax(settings).done(function (response) {
+
+        const DateTime = luxon.DateTime;
+        let localTimeZone = DateTime.local().zoneName
+
+        for (i = 0; i < response.length; i++) {
+
+            let timezone = response[i].time.timezone
+            let duration = response[i].time.duration
+            let id = response[i].time.id
+            let title = response[i].title
+            let description = response[i].description
+
+            let date = response[i].time.date
+
+            const dtLocal = DateTime.fromISO(date, {zone: localTimeZone});
+
+            var startMeeting = dtLocal.toISO();
+            var finishMeeting = dtLocal.plus({minutes: duration}).toISO()
+
+
+
+            const dtNow = DateTime.fromISO(new Date().getTime());
+
+            const dtSelected = DateTime.fromISO(startMeeting);
+
+            let nowTimeInteger = dtNow.ts
+            let selectedTimeInteger = dtSelected.ts
+
+
+            if (selectedTimeInteger > nowTimeInteger) {
+
+                calendar.addEvent({
+                    timezone: localTimeZone,
+                    title: title,
+                    description: description,
+                    start: startMeeting,
+                    end: finishMeeting,
+                    color: '#4FBBC5'
+
+
+                });
+            }else {
+                calendar.addEvent({
+                    timezone: localTimeZone,
+                    title: title,
+                    description: description,
+                    start: startMeeting,
+                    end: finishMeeting,
+                    color: '#BE6445'
+
+                });
+            }
+
+        }
+        calendar.setOption('timeZone', localTimeZone);
+
+    });
+
+
+    function ChangeLanguage() {
+
+
+        if (document.getElementById("countryButton").classList.value.includes("flag flag-gb")) {
+
+            document.getElementById("countryButton").classList.add("flag-ru")
+            document.getElementById("countryButton").classList.remove("flag-gb")
+
+            localStorage.setItem("language", "ru");
+            calendar.setOption('locale', 'ru');
+
+
+        } else {
+
+            document.getElementById("countryButton").classList.add("flag-gb")
+            document.getElementById("countryButton").classList.remove("flag-ru")
+
+            localStorage.setItem("language", "gb");
+            calendar.setOption('locale', 'en');
+
+        }
+
+
+        let language = localStorage.getItem("language");
+
+
+        $.getScript("languages/lang." + language + ".js", function (data, textStatus, jqxhr) {
+
+
+            document.getElementById("scheduleMeeting").innerText = lang.scheduleMeeting
+            document.getElementById("exampleModalLabel").innerText = lang.exampleModalLabel
+            document.getElementById("yourSelectedDateTime").innerText = lang.yourSelectedDateTime
+            document.getElementById("meetingTitle").innerText = lang.meetingTitle
+            document.getElementById("yourContactDetails").innerText = lang.yourContactDetails
+            document.getElementById("sendEmail").innerText = lang.sendEmail
+            document.getElementById("yourParticipants").innerText = lang.yourParticipants
+            document.getElementById("meetingDescription").innerText = lang.meetingDescription
+
+
+            document.getElementById("contactUsername").placeholder = lang.contactUsername
+            document.getElementById("contactEmail").placeholder = lang.contactEmail
+
+            document.getElementById("timezoneSelector").innerText = lang.timezoneSelector
+
+
+            document.getElementById("nameParticipant[0]").placeholder = lang.contactUsername
+            document.getElementById("emailParticipant[0]").placeholder = lang.contactEmail
+
+
+            document.getElementById("onSuccessRequest").innerText = lang.onSuccessRequest
+
+
+        });
+
+    }
+
+    function areaOfInterestListener(clicked_id){
+
+        isSelected =  document.getElementById(clicked_id).style.backgroundColor
+
+        if(isSelected === "rgb(154, 196, 60)") {
+            document.getElementById(clicked_id).style.backgroundColor = "#225765"
+
+            document.getElementById(clicked_id).innerHTML =
+                "  <span class=\"badge badge-pill badge-primary\" style=\"background-color:#225765\">\t" +
+                "<i class=\"fal fa-circle\" aria-hidden=\"true\"></i>\n" +
+                " </span>" + clicked_id + "\n"
+        }else{
+            document.getElementById(clicked_id).style.backgroundColor = "#9AC43C"
+
+            document.getElementById(clicked_id).innerHTML =
+                "  <span class=\"badge badge-pill badge-primary\" style=\"background-color:#9AC43C\">\t" +
+                "<i class=\"fal fa-check-circle\" aria-hidden=\"true\"></i>\n" +
+                " </span>" + clicked_id + "\n"
+
+        }
+
+
+
+        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        let isEmailParticipantlValid = re.test(String(document.getElementById("emailParticipant[0]").value.toString()).toLowerCase());
+        let nameParticipantZero = document.getElementById("nameParticipant[0]").value
+        let emailParticipantZero = document.getElementById("emailParticipant[0]").value
+
+        if((document.getElementById("styledSelectId").innerText.toString().trim() =="Choose Country")
+
+            && (document.getElementsByClassName("fal fa-check-circle").length == 0)
+            && (nameParticipantZero.toString().length <= 0)
+            && (emailParticipantZero.toString().length <= 0)
+        ){
+
+            document.getElementById("sendEmail").classList.add("disable-button-meeting")
+
+        }else{
+
+            if ((emailParticipantZero.toString().length > 0)&&(isEmailParticipantlValid == true)) {
+
+                document.getElementById("sendEmail").classList.add("disable-button-meeting")
+            }else{
+                document.getElementById("sendEmail").classList.remove("disable-button-meeting")
+
+            }
+        }
+
+
+
+
+
+
+
+
+    }
+
+
+    function copyDesktopLink() {
+
+        var copyText = document.getElementById("desktopLinkBox");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999)
+        document.execCommand("copy");
+
+    }
+
+    function copyWebLink() {
+
+        var copyText = document.getElementById("webLinkBox");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999)
+        document.execCommand("copy");
+
+    }
+
+    function createMeetingUrlForRequested() {
+
+        let requestedMeetingId = localStorage.getItem("requestedMeetingId");
+        let requestedContactEmail = document.getElementById("requestedContactEmail").value
+        let requestedContactUsername = document.getElementById("requestedContactUsername").value
+
+
+        var settings = {
+            "url": "https://"+window.location.hostname+":4000/add_participant",
+            "method": "POST",
+            "timeout": 0,
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "data": JSON.stringify({
+                "requestedMeetingId": "" + requestedMeetingId + "",
+                "role": "0",
+                "requestedContactEmail": "" + requestedContactEmail + "",
+                "requestedContactUsername": "" + requestedContactUsername + ""
+            }),
+        };
+
+        $.ajax(settings).done(function (response) {
+
+            let desktopLink = response.desktopLink
+            let participantUrl = response.participantUrl
+
+            document.getElementById("infoJoinLinks").style.display = "block";
+
+            document.getElementById("webLink").innerText = lang.webLink
+            document.getElementById("desktopLink").innerText = lang.desktopLink
+
+
+            document.getElementById("desktopLinkBox").value = desktopLink
+            document.getElementById("webLinkBox").value = participantUrl
+
+            $("#requestForJoinMeeting").on('hidden.bs.modal', function () {
+
+                document.getElementById("infoJoinLinks").style.display = "none";
+                document.getElementById("desktopLinkBox").value = ""
+                document.getElementById("webLinkBox").value = ""
+                document.getElementById("requestedContactEmail").value = ""
+                document.getElementById("requestedContactUsername").value = ""
+
+
+            });
+
+            document.getElementById("createMeetingUrlForRequested").classList.add("disable-button-meeting")
+
+
+        });
+
+
+    }
+
+    function sendEmailToAdmin() {
+
+        let dateAndTimeBox = document.getElementById("dateAndTimeBox").value
+        let meetingTitleBox = document.getElementById("meetingTitleBox").value
+        let meetingDescriptionBox = document.getElementById("meetingDescriptionBox").value
+        let contactUsername = document.getElementById("contactUsername").value
+        let contactEmail = document.getElementById("contactEmail").value
+        let nameParticipantZero = document.getElementById("nameParticipant[0]").value
+        let emailParticipantZero = document.getElementById("emailParticipant[0]").value
+
+        let emailParticipantsNumber = document.getElementsByClassName("participants").length / 2
+
+
+        var timeObject = {};
+        timeObject.date = localStorage.getItem("dateBoxDate")
+        timeObject.duration = parseInt(localStorage.getItem("dateBoxDuration"));
+        timeObject.timezone = localStorage.getItem("TimezonePlugin");
+
+
+        var hostObject = {};
+        hostObject.name = contactUsername;
+        hostObject.email = contactEmail;
+
+        var meetingObject = {};
+        meetingObject.title = meetingTitleBox;
+        meetingObject.description = meetingDescriptionBox;
+
+        meetingObject.time = timeObject;
+        meetingObject.host = hostObject;
+        meetingObject.participants = []
+        meetingObject.countryParticipants = []
+        meetingObject.interestAreaParticipants = []
+
+
+        for (let i = 0; i < document.getElementsByClassName("participants").length + 1; i++) {
+
+            try {
+                let nameParticipant = document.getElementById("nameParticipant[" + i + "]").value
+                let emailParticipant = document.getElementById("emailParticipant[" + i + "]").value
+                meetingObject.participants.push({
+                    "name": nameParticipant,
+                    "email": emailParticipant
+                });
+            } catch (e) {
+
+            }
+
+        }
+
+        for(let x =0 ;x<document.getElementsByClassName("fal fa-check-circle").length;x++){
+
+            let interest = document.getElementsByClassName("fal fa-check-circle")[x].parentElement.parentElement.id
+            meetingObject.interestAreaParticipants.push(interest);
+
+        }
+        var isoCountries = {
+            'AFG':'Afghanistan',
+            'ALA':'Åland Islands',
+            'ALB':'Albania',
+            'DZA':'Algeria',
+            'ASM':'American Samoa',
+            'AND':'Andorra',
+            'AGO':'Angola',
+            'AIA':'Anguilla',
+            'ATA':'Antarctica',
+            'ATG':'Antigua and Barbuda',
+            'ARG':'Argentina',
+            'ARM':'Armenia',
+            'ABW':'Aruba',
+            'AUS':'Australia',
+            'AUT':'Austria',
+            'AZE':'Azerbaijan',
+            'BHS':'Bahamas',
+            'BHR':'Bahrain',
+            'BGD':'Bangladesh',
+            'BRB':'Barbados',
+            'BLR':'Belarus',
+            'BEL':'Belgium',
+            'BLZ':'Belize',
+            'BEN':'Benin',
+            'BMU':'Bermuda',
+            'BTN':'Bhutan',
+            'BOL':'Bolivia, Plurinational State of',
+            'BES':'Bonaire, Sint Eustatius and Saba',
+            'BIH':'Bosnia and Herzegovina',
+            'BWA':'Botswana',
+            'BVT':'Bouvet Island',
+            'BRA':'Brazil',
+            'IOT':'British Indian Ocean Territory',
+            'BRN':'Brunei Darussalam',
+            'BGR':'Bulgaria',
+            'BFA':'Burkina Faso',
+            'BDI':'Burundi',
+            'KHM':'Cambodia',
+            'CMR':'Cameroon',
+            'CAN':'Canada',
+            'CPV':'Cape Verde',
+            'CYM':'Cayman Islands',
+            'CAF':'Central African Republic',
+            'TCD':'Chad',
+            'CHL':'Chile',
+            'CHN':'China',
+            'CXR':'Christmas Island',
+            'CCK':'Cocos (Keeling) Islands',
+            'COL':'Colombia',
+            'COM':'Comoros',
+            'COG':'Congo',
+            'COD':'Congo, the Democratic Republic of the',
+            'COK':'Cook Islands',
+            'CRI':'Costa Rica',
+            'CIV':'Côte d\'Ivoire',
+            'HRV':'Croatia',
+            'CUB':'Cuba',
+            'CUW':'Curaçao',
+            'CYP':'Cyprus',
+            'CZE':'Czech Republic',
+            'DNK':'Denmark',
+            'DJI':'Djibouti',
+            'DMA':'Dominica',
+            'DOM':'Dominican Republic',
+            'ECU':'Ecuador',
+            'EGY':'Egypt',
+            'SLV':'El Salvador',
+            'GNQ':'Equatorial Guinea',
+            'ERI':'Eritrea',
+            'EST':'Estonia',
+            'ETH':'Ethiopia',
+            'FLK':'Falkland Islands (Malvinas)',
+            'FRO':'Faroe Islands',
+            'FJI':'Fiji',
+            'FIN':'Finland',
+            'FRA':'France',
+            'GUF':'French Guiana',
+            'PYF':'French Polynesia',
+            'ATF':'French Southern Territories',
+            'GAB':'Gabon',
+            'GMB':'Gambia',
+            'GEO':'Georgia',
+            'DEU':'Germany',
+            'GHA':'Ghana',
+            'GIB':'Gibraltar',
+            'GRC':'Greece',
+            'GRL':'Greenland',
+            'GRD':'Grenada',
+            'GLP':'Guadeloupe',
+            'GUM':'Guam',
+            'GTM':'Guatemala',
+            'GGY':'Guernsey',
+            'GIN':'Guinea',
+            'GNB':'Guinea-Bissau',
+            'GUY':'Guyana',
+            'HTI':'Haiti',
+            'HMD':'Heard Island and McDonald Islands',
+            'VAT':'Holy See (Vatican City State)',
+            'HND':'Honduras',
+            'HKG':'Hong Kong',
+            'HUN':'Hungary',
+            'ISL':'Iceland',
+            'IND':'India',
+            'IDN':'Indonesia',
+            'IRN':'Iran, Islamic Republic of',
+            'IRQ':'Iraq',
+            'IRL':'Ireland',
+            'IMN':'Isle of Man',
+            'ISR':'Israel',
+            'ITA':'Italy',
+            'JAM':'Jamaica',
+            'JPN':'Japan',
+            'JEY':'Jersey',
+            'JOR':'Jordan',
+            'KAZ':'Kazakhstan',
+            'KEN':'Kenya',
+            'KIR':'Kiribati',
+            'PRK':'Korea, Democratic People\'s Republic of',
+            'KOR':'Korea, Republic of',
+            'KWT':'Kuwait',
+            'KGZ':'Kyrgyzstan',
+            'LAO':'Lao People\'s Democratic Republic',
+            'LVA':'Latvia',
+            'LBN':'Lebanon',
+            'LSO':'Lesotho',
+            'LBR':'Liberia',
+            'LBY':'Libya',
+            'LIE':'Liechtenstein',
+            'LTU':'Lithuania',
+            'LUX':'Luxembourg',
+            'MAC':'Macao',
+            'MKD':'Macedonia, the former Yugoslav Republic of',
+            'MDG':'Madagascar',
+            'MWI':'Malawi',
+            'MYS':'Malaysia',
+            'MDV':'Maldives',
+            'MLI':'Mali',
+            'MLT':'Malta',
+            'MHL':'Marshall Islands',
+            'MTQ':'Martinique',
+            'MRT':'Mauritania',
+            'MUS':'Mauritius',
+            'MYT':'Mayotte',
+            'MEX':'Mexico',
+            'FSM':'Micronesia, Federated States of',
+            'MDA':'Moldova, Republic of',
+            'MCO':'Monaco',
+            'MNG':'Mongolia',
+            'MNE':'Montenegro',
+            'MSR':'Montserrat',
+            'MAR':'Morocco',
+            'MOZ':'Mozambique',
+            'MMR':'Myanmar',
+            'NAM':'Namibia',
+            'NRU':'Nauru',
+            'NPL':'Nepal',
+            'NLD':'Netherlands',
+            'NCL':'New Caledonia',
+            'NZL':'New Zealand',
+            'NIC':'Nicaragua',
+            'NER':'Niger',
+            'NGA':'Nigeria',
+            'NIU':'Niue',
+            'NFK':'Norfolk Island',
+            'MNP':'Northern Mariana Islands',
+            'NOR':'Norway',
+            'OMN':'Oman',
+            'PAK':'Pakistan',
+            'PLW':'Palau',
+            'PSE':'Palestinian Territory, Occupied',
+            'PAN':'Panama',
+            'PNG':'Papua New Guinea',
+            'PRY':'Paraguay',
+            'PER':'Peru',
+            'PHL':'Philippines',
+            'PCN':'Pitcairn',
+            'POL':'Poland',
+            'PRT':'Portugal',
+            'PRI':'Puerto Rico',
+            'QAT':'Qatar',
+            'REU':'Réunion',
+            'ROU':'Romania',
+            'RUS':'Russian Federation',
+            'RWA':'Rwanda',
+            'BLM':'Saint Barthélemy',
+            'SHN':'Saint Helena, Ascension and Tristan da Cunha',
+            'KNA':'Saint Kitts and Nevis',
+            'LCA':'Saint Lucia',
+            'MAF':'Saint Martin (French part)',
+            'SPM':'Saint Pierre and Miquelon',
+            'VCT':'Saint Vincent and the Grenadines',
+            'WSM':'Samoa',
+            'SMR':'San Marino',
+            'STP':'Sao Tome and Principe',
+            'SAU':'Saudi Arabia',
+            'SEN':'Senegal',
+            'SRB':'Serbia',
+            'SYC':'Seychelles',
+            'SLE':'Sierra Leone',
+            'SGP':'Singapore',
+            'SXM':'Sint Maarten (Dutch part)',
+            'SVK':'Slovakia',
+            'SVN':'Slovenia',
+            'SLB':'Solomon Islands',
+            'SOM':'Somalia',
+            'ZAF':'South Africa',
+            'SGS':'South Georgia and the South Sandwich Islands',
+            'SSD':'South Sudan',
+            'ESP':'Spain',
+            'LKA':'Sri Lanka',
+            'SDN':'Sudan',
+            'SUR':'Suriname',
+            'SJM':'Svalbard and Jan Mayen',
+            'SWZ':'Swaziland',
+            'SWE':'Sweden',
+            'CHE':'Switzerland',
+            'SYR':'Syrian Arab Republic',
+            'TWN':'Taiwan, Province of China',
+            'TJK':'Tajikistan',
+            'TZA':'Tanzania, United Republic of',
+            'THA':'Thailand',
+            'TLS':'Timor-Leste',
+            'TGO':'Togo',
+            'TKL':'Tokelau',
+            'TON':'Tonga',
+            'TTO':'Trinidad and Tobago',
+            'TUN':'Tunisia',
+            'TUR':'Turkey',
+            'TKM':'Turkmenistan',
+            'TCA':'Turks and Caicos Islands',
+            'TUV':'Tuvalu',
+            'UGA':'Uganda',
+            'UKR':'Ukraine',
+            'ARE':'United Arab Emirates',
+            'GBR':'United Kingdom',
+            'USA':'United States',
+            'UMI':'United States Minor Outlying Islands',
+            'URY':'Uruguay',
+            'UZB':'Uzbekistan',
+            'VUT':'Vanuatu',
+            'VEN':'Venezuela, Bolivarian Republic of',
+            'VNM':'Viet Nam',
+            'VGB':'Virgin Islands, British',
+            'VIR':'Virgin Islands, U.S.',
+            'WLF':'Wallis and Futuna',
+            'ESH':'Western Sahara',
+            'YEM':'Yemen',
+            'ZMB':'Zambia',
+            'ZWE':'Zimbabwe'
+        };
+
+        let countryString = document.getElementById("styledSelectId").innerText.toString().trim()
+        if( countryString!="Choose Country"){
+
+            let res = countryString.split(",");
+
+            for(let x=0;x<res.length;x++){
+
+                let countryCode = Object.keys(isoCountries).find(key => isoCountries[key] === res[x].trim())
+                meetingObject.countryParticipants.push(countryCode);
+
+            }
+        }
+
+
+
+
+        var jsonString = JSON.stringify(meetingObject);
+
+        var settings = {
+            "url": "https://"+window.location.hostname+":4000/requestedMeetings",
+            "method": "POST",
+            "timeout": 0,
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "data": JSON.stringify(meetingObject),
+        };
+
+        $.ajax(settings).done(function (response) {
+
+
+            if (response.toString().trim() === "OK") {
+                $("#exampleModal").modal('hide')
+                $("#successModal").modal('show')
+
+
+                $("#successModal").on('hidden.bs.modal', function () {
+
+                    window.location.reload();
+                });
+
+
+            } else {
+                $("#errorModal").modal('show')
+
+            }
+
+
+        });
+
+
+
+    }
+
+
+    function ClearMeetingParticipants() {
+
+
+        for (let i = 0; i < 11; i++) {
+            try {
+                document.getElementsByClassName("participants")[i].value = '';
+                document.getElementsByClassName("participants")[i].classList.remove("allSidesGreen");
+                document.getElementsByClassName("participants")[i].classList.add("allSidesRed");
+                document.getElementsByClassName("emailParticipant")[i].value = '';
+                document.getElementsByClassName("emailParticipant")[i].classList.remove("allSidesGreen");
+                document.getElementsByClassName("emailParticipant")[i].classList.add("allSidesRed");
+            } catch (e) {
+
+            }
+
+        }
+    }
+
+    function AddListenerValidateParticipants(x) {
+        try {
+            /////****Event Listener for Email Validation****////////
+            let timer, timeoutVal = 500; // time it takes to wait for user to stop typing in ms
+
+            document.getElementById("nameParticipant[" + x + "]").addEventListener('keypress', handleKeyPress);
+            document.getElementById("nameParticipant[" + x + "]").addEventListener('keyup', handleKeyUp);
+            document.getElementById("emailParticipant[" + x + "]").addEventListener('keyup', handleKeyUp);
+            document.getElementById("emailParticipant[" + x + "]").addEventListener('keyup', handleKeyUp);
+
+            function handleKeyPress(e) {
+                window.clearTimeout(timer);
+            }
+
+            // when the user has stopped pressing on keys, set the timeout
+            // if the user presses on keys before the timeout is reached, then this timeout is canceled
+            function handleKeyUp(e) {
+                window.clearTimeout(timer); // prevent errant multiple timeouts from being generated
+                timer = window.setTimeout(() => {
+                    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+                    let isEmailParticipantlValid = re.test(String(document.getElementById("emailParticipant[" + x + "]").value.toString()).toLowerCase());
+
+                    let nameParticipant = document.getElementById("nameParticipant[" + x + "]").value
+                    let emailParticipant = document.getElementById("emailParticipant[" + x + "]").value
+
+                    if (nameParticipant.length > 0) {
+                        document.getElementById("nameParticipant[" + x + "]").classList.remove("allSidesRed");
+                        document.getElementById("nameParticipant[" + x + "]").classList.add("allSidesGreen");
+
+                    } else {
+                        document.getElementById("nameParticipant[" + x + "]").classList.remove("allSidesGreen");
+                        document.getElementById("nameParticipant[" + x + "]").classList.add("allSidesRed");
+
+                    }
+
+                    if (emailParticipant.length > 0) {
+                        if (isEmailParticipantlValid == true) {
+
+                            document.getElementById("emailParticipant[" + x + "]").classList.remove("allSidesRed");
+                            document.getElementById("emailParticipant[" + x + "]").classList.add("allSidesGreen");
+                        } else {
+                            document.getElementById("emailParticipant[" + x + "]").classList.remove("allSidesGreen");
+                            document.getElementById("emailParticipant[" + x + "]").classList.add("allSidesRed");
+                        }
+                    } else {
+                        document.getElementById("emailParticipant[" + x + "]").classList.remove("allSidesGreen");
+                        document.getElementById("emailParticipant[" + x + "]").classList.add("allSidesRed");
+                    }
+
+
+                }, timeoutVal);
+            }
+        } catch (e) {
+
+        }
+
+
+    }
+
+    /////****--------------------------------------****////////
+    function AddListenerValidateMeetingDetails() {
+
+        let timer, timeoutVal = 500; // time it takes to wait for user to stop typing in ms
+
+        document.getElementById("dateAndTimeBox").addEventListener('keypress', handleKeyPress);
+        document.getElementById("dateAndTimeBox").addEventListener('keyup', handleKeyUp);
+        document.getElementById("meetingTitleBox").addEventListener('keypress', handleKeyPress);
+        document.getElementById("meetingTitleBox").addEventListener('keyup', handleKeyUp);
+        document.getElementById("meetingDescriptionBox").addEventListener('keypress', handleKeyPress);
+        document.getElementById("meetingDescriptionBox").addEventListener('keyup', handleKeyUp);
+        document.getElementById("contactUsername").addEventListener('keypress', handleKeyPress);
+        document.getElementById("contactUsername").addEventListener('keyup', handleKeyUp);
+        document.getElementById("contactEmail").addEventListener('keypress', handleKeyPress);
+        document.getElementById("contactEmail").addEventListener('keyup', handleKeyUp);
+        document.getElementById("nameParticipant[0]").addEventListener('keypress', handleKeyPress);
+        document.getElementById("nameParticipant[0]").addEventListener('keyup', handleKeyUp);
+        document.getElementById("emailParticipant[0]").addEventListener('keypress', handleKeyPress);
+        document.getElementById("emailParticipant[0]").addEventListener('keyup', handleKeyUp);
+
+
+        // when user is pressing down on keys, clear the timeout
+        function handleKeyPress(e) {
+            window.clearTimeout(timer);
+        }
+
+        // when the user has stopped pressing on keys, set the timeout
+        // if the user presses on keys before the timeout is reached, then this timeout is canceled
+        function handleKeyUp(e) {
+            window.clearTimeout(timer); // prevent errant multiple timeouts from being generated
+            timer = window.setTimeout(() => {
+
+                let dateAndTimeBox = document.getElementById("dateAndTimeBox").value
+                let meetingTitleBox = document.getElementById("meetingTitleBox").value
+                let meetingDescriptionBox = document.getElementById("meetingDescriptionBox").value
+                let contactUsername = document.getElementById("contactUsername").value
+                let contactEmail = document.getElementById("contactEmail").value
+                let nameParticipantZero = document.getElementById("nameParticipant[0]").value
+                let emailParticipantZero = document.getElementById("emailParticipant[0]").value
+
+
+                const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                let isContactEmailValid = re.test(String(document.getElementById("contactEmail").value.toString()).toLowerCase());
+                let isEmailParticipantlValid = re.test(String(document.getElementById("emailParticipant[0]").value.toString()).toLowerCase());
+
+
+                // if ((dateAndTimeBox.length > 0) && (meetingTitleBox.length > 0)
+                //     && (meetingDescriptionBox.length > 0) && (contactUsername.length > 0) && (nameParticipantZero.length > 0)) {
+                //     if ((isContactEmailValid == true) && (isEmailParticipantlValid == true)) {
+                //
+                //         document.getElementById("sendEmail").classList.remove("disable-button-meeting")
+                //
+                //     } else {
+                //         document.getElementById("sendEmail").classList.add("disable-button-meeting")
+                //     }
+                // } else {
+                //     document.getElementById("sendEmail").classList.add("disable-button-meeting")
+                // }
+
+                if ((dateAndTimeBox.length > 0) && (meetingTitleBox.length > 0)
+                    && (meetingDescriptionBox.length > 0) && (contactUsername.length > 0)) {
+                    if (isContactEmailValid == true) {
+
+                        document.getElementById("firstNext").classList.remove("disable-button-meeting")
+
+                    } else {
+                        document.getElementById("firstNext").classList.add("disable-button-meeting")
+                    }
+                } else {
+                    document.getElementById("firstNext").classList.add("disable-button-meeting")
+                }
+
+
+                if (dateAndTimeBox.length > 0) {
+                    document.getElementById("dateAndTimeBox").classList.remove("allSidesRed");
+                    document.getElementById("dateAndTimeBox").classList.add("allSidesGreen");
+
+                } else {
+                    document.getElementById("dateAndTimeBox").classList.remove("allSidesGreen");
+                    document.getElementById("dateAndTimeBox").classList.add("allSidesRed");
+
+                }
+                if (meetingTitleBox.length > 0) {
+                    document.getElementById("meetingTitleBox").classList.remove("allSidesRed");
+                    document.getElementById("meetingTitleBox").classList.add("allSidesGreen");
+
+                } else {
+                    document.getElementById("meetingTitleBox").classList.remove("allSidesGreen");
+                    document.getElementById("meetingTitleBox").classList.add("allSidesRed");
+
+                }
+                if (meetingDescriptionBox.length > 0) {
+                    document.getElementById("meetingDescriptionBox").classList.remove("allSidesRed");
+                    document.getElementById("meetingDescriptionBox").classList.add("allSidesGreen");
+                } else {
+                    document.getElementById("meetingDescriptionBox").classList.remove("allSidesGreen");
+                    document.getElementById("meetingDescriptionBox").classList.add("allSidesRed");
+                }
+                if (contactUsername.length > 0) {
+                    document.getElementById("contactUsername").classList.remove("allSidesRed");
+                    document.getElementById("contactUsername").classList.add("allSidesGreen");
+                } else {
+                    document.getElementById("contactUsername").classList.remove("allSidesGreen");
+                    document.getElementById("contactUsername").classList.add("allSidesRed");
+                }
+                if (contactEmail.length > 0) {
+                    if (isContactEmailValid == true) {
+
+                        document.getElementById("contactEmail").classList.remove("allSidesRed");
+                        document.getElementById("contactEmail").classList.add("allSidesGreen");
+                    } else {
+                        document.getElementById("contactEmail").classList.remove("allSidesGreen");
+                        document.getElementById("contactEmail").classList.add("allSidesRed");
+                    }
+                } else {
+                    document.getElementById("contactEmail").classList.remove("allSidesGreen");
+                    document.getElementById("contactEmail").classList.add("allSidesRed");
+                }
+                if (nameParticipantZero.length > 0) {
+                    document.getElementById("nameParticipant[0]").classList.remove("allSidesRed");
+                    document.getElementById("nameParticipant[0]").classList.add("allSidesGreen");
+                } else {
+                    document.getElementById("nameParticipant[0]").classList.remove("allSidesGreen");
+                    document.getElementById("nameParticipant[0]").classList.add("allSidesRed");
+                }
+                if (emailParticipantZero.length > 0) {
+                    if (isEmailParticipantlValid == true) {
+
+                        document.getElementById("emailParticipant[0]").classList.remove("allSidesRed");
+                        document.getElementById("emailParticipant[0]").classList.add("allSidesGreen");
+                    } else {
+                        document.getElementById("emailParticipant[0]").classList.remove("allSidesGreen");
+                        document.getElementById("emailParticipant[0]").classList.add("allSidesRed");
+                    }
+                } else {
+                    document.getElementById("emailParticipant[0]").classList.remove("allSidesGreen");
+                    document.getElementById("emailParticipant[0]").classList.add("allSidesRed");
+                }
+
+
+
+                try {
+
+                    let nameParticipantZero = document.getElementById("nameParticipant[0]").value
+                    let emailParticipantZero = document.getElementById("emailParticipant[0]").value
+
+                    if((document.getElementById("styledSelectId").innerText.toString().trim() =="Choose Country")
+
+                        && (document.getElementsByClassName("fal fa-check-circle").length == 0)
+                        && (nameParticipantZero.toString().length <= 0)
+                        && (emailParticipantZero.toString().length <= 0)
+                    ){
+                        document.getElementById("sendEmail").classList.add("disable-button-meeting")
+                    }else{
+                        document.getElementById("sendEmail").classList.remove("disable-button-meeting")
+                    }
+                }catch (e) {
+
+                }
+
+
+
+
+
+
+
+
+
+
+
+            }, timeoutVal);
+        }
+    }
+
+
+</script>
+
+
+<script>
+
+    //xxxxxx
+    $("#exampleModal").on('hidden.bs.modal', function () {
+
+        document.getElementById("firstForm").style.display = "block"
+        document.getElementById("secondForm").style.display = "none"
+        document.getElementById("thirdForm").style.display = "none"
+
+    });
+</script>
+
+
+<script src="languages/lang.gb.js"></script>
+<!--<script src="languages/lang.ru.js"></script>-->
+<!--localStorage.setItem("language", "ru");-->
+
+</body>
+</html>
