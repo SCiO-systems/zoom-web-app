@@ -14,7 +14,7 @@ let DOMAIN=window.location.hostname
   // ZoomMtg.setZoomJSLib('http://localhost:9999/node_modules/@zoomus/websdk/dist/lib', '/av'); // Local version default, Angular Project change to use cdn version
   ZoomMtg.preLoadWasm(); // pre download wasm file to save time.
 
-  var API_KEY = "XXXXXX";
+  var API_KEY = "xxxx";
 
   /**
    * NEVER PUT YOUR ACTUAL API SECRET IN CLIENT SIDE CODE, THIS IS JUST FOR QUICK PROTOTYPING
@@ -146,8 +146,6 @@ let DOMAIN=window.location.hostname
         apiSecret: API_SECRET,
         role: meetingConfig.role,
         success: function (res) {
-
-
 
             var settings = {
                 "url": "https://"+DOMAIN+":4000",

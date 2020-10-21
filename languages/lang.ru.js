@@ -31,16 +31,16 @@ lang = {
     tableToggle: "Таблица",
     requestsToggle: "Запросы",
     scheduledToggle: "Запланированные",
-    desktopLink: "Russian",
-    webLink: "Russian",
-    requestExampleModalLabel:"Russian Join the Meeting",
-    createMeetingUrlForRequested:"Get Join Link",
-    theEmailsAreNotSent:"Russian Invitations not send! Please try again.",
-    theEmailsAreSent: "Russian The Invitations have been sent successfully!",
-    onSuccessRequest:"Russian Your request has been registered, the CACIP administrator will contact you in the next 3 days",
-    onFailRequest:"Russian Request not send! Please contact directly with your administrator",
-    successCreateMeetingModalText: "Russian The meeting has been scheduled! You can share the invitations.",
-    failCreateMeetingModalText: "Russian Meeting not scheduled! Please try again."
+    desktopLink: "Запланировано",
+    webLink: "Ссылка",
+    requestExampleModalLabel:"Присоединиться к телеконференции",
+    createMeetingUrlForRequested:"Получить ссылку для входа в телеконференцию",
+    theEmailsAreNotSent:"Приглашения не отправлены! Попробуйте снова",
+    theEmailsAreSent: "Все приглашения успешно отправлены!",
+    onSuccessRequest:"Ваш запрос зарегистрирован. Администратор ЦАКИП свяжется с вами в течении 3-х дней",
+    onFailRequest:"Запрос не был отправлен. Пожалуйста, обратитесь к администратору системы",
+    successCreateMeetingModalText: "Ваше телеконференция запланирована!  Отправьте приглашения",
+    failCreateMeetingModalText: "Телеконференция не запланирована. Пожалуйста, попробуйте еще раз"
 
 
 };

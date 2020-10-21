@@ -1,8 +1,8 @@
 {
-  "name": "websdk-cdn",
-  "version": "1.8.0",
+  "name": "zoom",
+  "version": "1.0.0",
   "description": "Zoom sample app for web client WebSDK",
-  "main": "index.js",
+  "main": "server.js",
   "type": "module",
   "dependencies": {
     "@fullcalendar/core": "^5.3.1",
@@ -10,7 +10,10 @@
     "@fullcalendar/moment-timezone": "^5.3.1",
     "crypto-js": "^4.0.0",
     "dotenv": "^8.2.0",
-    "flag-icon-css": "^3.5.0"
+    "flag-icon-css": "^3.5.0",
+    "express": "^4.17.1",
+    "helmet": "^3.21.0",
+    "morgan": "^1.9.1"
   },
   "devDependencies": {
     "@fullcalendar/react": "^5.3.1",
@@ -20,13 +23,8 @@
     "zoomus-jssdk": "^1.7.1"
   },
   "scripts": {
-    "custom2": "concurrently \"http-server -a 0.0.0.0 -p 443 -c-1 -S -C localhost.crt -K localhost.key -o https://dev.scio.services:443/requestPanel.html\"",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": " concurrently \"http-server -a 0.0.0.0 -p 9999 -c-1 -o index.html\"",
-    "custom": "concurrently \"http-server -a 0.0.0.0 -p 9999 -c-1 -o customZoom.html\"",
-    "custom3": "concurrently \"http-server -a 0.0.0.0 -p 9999 -c-1 -o requestPanel.html\"",
-    "https": "concurrently \"http-server -a 0.0.0.0 -p 9999 -c-1 -S -C localhost.crt -K localhost.key -o https://localhost:9999/index.html\""
+    "start_zoom": "concurrently \"http-server -a 0.0.0.0 -p 443 -c-1 -S -C localhost.crt -K localhost.key -o \""
   },
-  "author": "Yang Jack",
-  "license": "ISC"
+  "author": "Kyriakos Zorbas",
+  "license": "cc0"
 }
