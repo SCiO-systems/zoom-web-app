@@ -57,10 +57,11 @@ The requirements are mandatory to install & use the Zoom Web App:
 To install Zoom Web App follow the next steps:
 1. Create a folder named zoom-web-app.
 2. Copy the Zoom Web App [docker-compose.yml](https://github.com/SCiO-systems/zoom-web-app/blob/master/docker-compose.yml) to the zoom-web-app folder.
-3. Copy the  [.env](https://github.com/SCiO-systems/zoom-web-app/blob/master/.env) to the zoom-web-app folder.
-4. Copy the  [cert.crt](https://github.com/SCiO-systems/zoom-web-app/blob/master/cert.crt) to the zoom-web-app folder.
-5. Copy the  [key.key](https://github.com/SCiO-systems/zoom-web-app/blob/master/key.key) to the zoom-web-app folder.
-4. Execute the following command
+4. Copy the  [auth_config.json](https://github.com/SCiO-systems/zoom-web-app/blob/master/auth_config.json) to the zoom-web-app folder.
+5. Copy the  [.env](https://github.com/SCiO-systems/zoom-web-app/blob/master/.env) to the zoom-web-app folder.
+6. Copy the  [cert.crt](https://github.com/SCiO-systems/zoom-web-app/blob/master/cert.crt) to the zoom-web-app folder.
+7. Copy the  [key.key](https://github.com/SCiO-systems/zoom-web-app/blob/master/key.key) to the zoom-web-app folder.
+8. Execute the following command
 
 ```sh
 $zoomUiSecurePort={zoom  ui port number} $zoomServerSecurePort={zoom server port number} docker-compose {docker-compose.yml path} up &&  docker  exec  zoom-web sh start.sh 
@@ -82,6 +83,27 @@ Another requirement is to put the API key and secret pair that we have created e
     CLIENT_SECRET_AUTH0_APP =  <client secret of auth0 app>
     CLIENT_AUDIENCE_AUTH0_APP =  <client audience of auth0 app>
     CLIENT_TENANT_AUTH0_APP =  <client tenant of auth0 app>
+    SSO_MOODLE_PATH_FILE=<SSO_MOODLE_PATH_FILE>
+    SSO_GEONODE_PATH_FILE=<SSO_GEONODE_PATH_FILE>
+    MOODLE_DB_HOST=<MOODLE_DB_HOST>
+    MOODLE_DB_USERNAME=<MOODLE_DB_USERNAME>
+    MOODLE_DB_PASSWORD=<MOODLE_DB_PASSWORD>
+    MOODLE_DB_DATABASE_NAME=<MOODLE_DB_DATABASE_NAME>
+    GEONODE_DB_HOST=<GEONODE_DB_HOST>
+    GEONODE_DB_USERNAME=<GEONODE_DB_USERNAME>
+    GEONODE_DB_PASSWORD=<GEONODE_DB_PASSWORD>
+    GEONODE_DB_PORT=<GEONODE_DB_PORT>
+    GEONODE_DB_DATABASE_NAME=<GEONODE_DB_DATABASE_NAME>
+
+Another requirement is to put the auth0 domain and the clientId of the application (CACIP Ecosystem) we have created earlier inside the auth_config.json file.
+
+# [auth_config.json](https://github.com/SCiO-systems/zoom-web-app/blob/master/auth_config.json)
+
+{
+  "domain": "ADD_DOMAIN_HERE",
+  "clientId": "ADD_CLIENT_ID_HERE"
+}
+
 
  {zoom  ui port number}: The Port of the VM or physical machine that will host the Zoom Web App.
  {zoom server port number}: The Port of the VM or physical machine that will host the Zoom Web App
@@ -100,11 +122,21 @@ The source code of Zoom Web App is in [Github](https://github.com/SCiO-systems/z
           - ${zoomServerSecurePort}:4000
         volumes:
           - ./cert.crt:/zoom-web-app/localhost.crt
+          - ./auth_config.json:/zoom-web-app/auth_config.json
           - ./key.key:/zoom-web-app/localhost.key
           - ./cert.crt:/node-js-https-server-zoom/cert.pem
           - ./key.key:/node-js-https-server-zoom/key.pem
           - ./.env:/node-js-https-server-zoom/.env
-    
+
+      sso-apache-php:
+        container_name: sso-apache-php
+        image: scioquiver/apache-php-sso
+        ports:
+          -  ${ApachePort}:80
+        volumes:
+          - ./.env:/etc/environment-sso.env
+
+ {Apache port}: The Port of the VM or physical machine that will host the Apache container
 
 
 
@@ -113,4 +145,5 @@ List of Docker Images
 | Component | Location |
 | ------ | ------ |
 | Zoom Web App | [ scioquiver/zoomwebapp:latest](https://hub.docker.com/repository/docker/scioquiver/zoomwebapp) |
+| Apache php sso | [ scioquiver/apache-php-sso:latest](https://hub.docker.com/repository/docker/scioquiver/apache-php-sso)|
 
