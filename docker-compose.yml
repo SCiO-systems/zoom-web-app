@@ -1,0 +1,23 @@
+version: '2.2'
+services:
+  zoom:
+    container_name: zoom-web
+    image: scioquiver/zoomwebapp:latest
+    ports:
+      - ${zoomUiSecurePort}:443
+      - ${zoomServerSecurePort}:4000
+    volumes:
+      - ./cert.crt:/zoom-web-app/localhost.crt
+      - ./auth_config.json:/zoom-web-app/auth_config.json
+      - ./key.key:/zoom-web-app/localhost.key
+      - ./cert.crt:/node-js-https-server-zoom/cert.pem
+      - ./key.key:/node-js-https-server-zoom/key.pem
+      - ./.env:/node-js-https-server-zoom/.env
+
+  sso-apache-php:
+    container_name: sso-apache-php
+    image: scioquiver/apache-php-sso
+    ports:
+      - "8080:80"
+    volumes:
+      - ./.env:/etc/environment-sso.env
