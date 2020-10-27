@@ -18,6 +18,6 @@ services:
     container_name: sso-apache-php
     image: scioquiver/apache-php-sso
     ports:
-      - "8080:80"
+      - ${ApachePort}:80
     volumes:
       - ./.env:/etc/environment-sso.env
